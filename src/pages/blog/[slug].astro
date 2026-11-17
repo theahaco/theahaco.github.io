@@ -16,8 +16,7 @@ const d = post.data;
 const cover = coverFor(post.id, d.cover);
 const { Content, headings } = await render(post);
 const toc = headings.filter((h) => h.depth === 2);
-const author = d.author ? (await team()).find((m) => m.id === d.author) : undefined;
-const portrait = author?.data.portrait || '';
+const author = d.author && { id: d.author, ...(await team()).find((m) => m.id === d.author).data };
 const more = (await posts()).filter((p) => p.id !== post.id).slice(0, 2);
 const base = siteUrl(Astro.site);
 const pageUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
@@ -33,7 +32,7 @@ const articleLd = ld({
   mainEntityOfPage: pageUrl,
   datePublished: published,
   image: cover ? new URL(cover.replace(/^\//, ''), base).href : undefined,
-  author: d.authorName ? { '@type': 'Person', name: d.authorName, url: d.author ? new URL(`team/${d.author}/`, base).href : undefined } : undefined,
+  author: author && { '@type': 'Person', name: author.name, url: new URL(`team/${author.id}/`, base).href },
   publisher: { '@type': 'Organization', '@id': base + '#organization', name: 'The Aha Company', url: base },
 });
 ---
@@ -50,10 +49,10 @@ const articleLd = ld({
         </div>
         <div class="art_byline">
           <div class="art_author">
-            {portrait && <img alt="" class="art_avatar" src={portrait} />}
+            {author && <img alt="" class="art_avatar" src={author.portrait} />}
             <div>
-              {d.authorName && <p class="art_author-name">{d.authorName}</p>}
-              {d.authorRole && <p class="art_author-role">{d.authorRole}</p>}
+              {author && <p class="art_author-name">{author.name}</p>}
+              {author && <p class="art_author-role">{author.role}</p>}
             </div>
           </div>
           <div class="blog_author">
@@ -82,9 +81,9 @@ const articleLd = ld({
         <div class="blog_richtext w-richtext"><Content /></div>
         <div class="art_footer">
           <div class="art_authorcard">
-            {portrait && <img alt="" class="art_avatar48" src={portrait} />}
+            {author && <img alt="" class="art_avatar48" src={author.portrait} />}
             <div>
-              {d.authorName && <p class="art_author-name">{d.authorName}</p>}
+              {author && <p class="art_author-name"><a href={`/team/${author.id}`}>{author.name}</a></p>}
               {d.authorBio && <p class="art_bio">{d.authorBio}</p>}
             </div>
           </div>
