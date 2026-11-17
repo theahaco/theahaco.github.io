@@ -75,7 +75,8 @@ minutes after the merge.
 GitHub asks Enzo to review automatically. Once he approves, click **Merge
 pull request**, then **Confirm merge**. About two minutes later the article
 is on theaha.co: its own page, the home page (the three most recent
-articles), the Work page (Articles), the author's team page and the sitemap.
+articles), the Work page (Articles), the author's team page (if they have
+one) and the sitemap.
 
 ## Schedule an article
 
@@ -123,6 +124,29 @@ Same steps with [the team template](templates/team-member.md): the file
 `src/content/team/jane-doe.md` (first and last name), the photo
 `public/images/team/jane-doe.webp` (square, at least 400 x 400 px). The
 person then appears on About and on every team page.
+
+## Company, guest and former-team authors
+
+Set an article's `author` to `the-aha-company` to publish under the company
+name and logo, linked to the homepage.
+
+For other authors without a team profile, create
+`src/content/authors/jane-doe.md` with frontmatter fields `name`, optional
+`role`, optional `portrait` (an image path), and optional `link` (a site
+path, website or LinkedIn URL). Omit `link` or leave it empty for an
+unlinked byline. `type` defaults to `Person`; use `Organization` for a
+company. These entries have no profile pages and never appear in team lists.
+
+When someone leaves, move their file from `src/content/team/` into
+`src/content/authors/` without changing its filename. Their historic blog
+posts keep working. Add `link` only if their byline should link somewhere;
+otherwise it becomes plain text. Remove or reassign any case-study `team`
+and tool `built` references, which still require current team entries.
+Existing links to their old team profile need updating or a redirect.
+
+Each author filename must be unique across `team` and `authors`, even for
+drafts. The content checker stops the build with an explicit collision error
+if an ID exists in both collections.
 
 ## Add a case study
 

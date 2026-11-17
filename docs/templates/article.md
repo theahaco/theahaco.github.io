@@ -37,9 +37,9 @@ readMinutes: 4
 # Reading time, in minutes.
 
 author: enzo-soyer
-# The author's file name in src/content/team/, without .md: enzo-soyer,
-# willem-wyndham... The name, role and photo come from that file, and the
-# article is listed on that person's team page.
+# The author's file name in src/content/team/ or src/content/authors/,
+# without .md: enzo-soyer, the-aha-company... Name, role and image come
+# from that file. Current team members also list the article on their profile.
 
 authorBio: "CEO of The Aha Company. Stellar Community Fund reviewer and co-author of SEP-61."
 # One line shown at the end of the article.

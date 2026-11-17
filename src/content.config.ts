@@ -24,6 +24,19 @@ const quote = z.object({
   portraitAlt: str,
 });
 
+// Authors without a team profile: the company, guests and former teammates.
+const authors = defineCollection({
+  loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/authors' }),
+  schema: z.object({
+    draft: z.boolean().default(false),
+    name: z.string(),
+    type: z.enum(['Person', 'Organization']).default('Person'),
+    role: str,
+    portrait: str,
+    link: str.refine((v) => !v || /^\/(?!\/)/.test(v) || /^https?:\/\/[^/\s]+(?:[/?#]\S*)?$/.test(v), 'Author link must be empty, a site path starting with /, or an http(s) URL.'),
+  }),
+});
+
 const caseStudies = defineCollection({
   loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/case-studies' }),
   schema: z.object({
@@ -69,7 +82,7 @@ const blog = defineCollection({
     category: str, // eyebrow
     lede: str,
     description: str, // search description (160 characters max); defaults to the lede
-    author: str, // team member slug (for the team page "Writing" list)
+    author: str, // slug from team or authors (team members also list the post under "Writing")
     authorName: str,
     authorRole: str,
     authorBio: str,
@@ -192,4 +205,4 @@ const tools = defineCollection({
   }),
 });
 
-export const collections = { caseStudies, blog, networks, team, tools };
+export const collections = { caseStudies, blog, networks, team, authors, tools };
