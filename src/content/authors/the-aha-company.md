@@ -1,6 +1,6 @@
 ---
 name: The Aha Company
 type: Organization
-portrait: /images/brand/logo-512.png
+portrait: /images/brand/author-avatar.png
 link: /
 ---

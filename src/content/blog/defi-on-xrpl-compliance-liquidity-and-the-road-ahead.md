@@ -2,8 +2,8 @@
 title: 'DeFi on XRPL: compliance, liquidity and the road ahead'
 category: Protocols
 lede: 'XRPL keeps adding the pieces regulated DeFi needs at the protocol level: issuer controls, credentials, permissioned domains and a permissioned exchange. What is live, what is still missing, and how we advise teams issuing regulated assets on it today.'
-author: enzo-soyer
-authorBio: CEO of The Aha Company, a Ripple program partner for accelerator mentoring and developer experience on the XRP Ledger.
+author: the-aha-company
+authorBio: A Ripple program partner for accelerator mentoring and developer experience on the XRP Ledger.
 date: November 13, 2026
 readMinutes: '4'
 cover: /images/covers/defi-on-xrpl-compliance-liquidity-and-the-road-ahead.webp

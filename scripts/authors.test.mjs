@@ -35,7 +35,7 @@ test('standalone authors render independently of team membership', async (t) => 
   await put('team/test-former.md', '---\nname: Test Former\nlocation: France\n---\n');
   await cp(join(dir, 'src/content/team/test-former.md'), join(dir, 'src/content/authors/test-former.md'));
   await rm(join(dir, 'src/content/team/test-former.md'));
-  for (const [slug, author] of [['test-company', 'the-aha-company'], ['test-guest', 'test-guest'], ['test-former', 'test-former']]) {
+  for (const [slug, author] of [['test-company', 'the-aha-company'], ['test-guest', 'test-guest'], ['test-former', 'test-former'], ['test-team', 'enzo-soyer']]) {
     await put(`blog/${slug}.md`, `---\ntitle: ${slug}\nauthor: ${author}\ndate: January 1, 2026\n---\nTest article.\n`);
   }
   successful(run('scripts/check-content.mjs'));
@@ -44,7 +44,12 @@ test('standalone authors render independently of team membership', async (t) => 
   await t.test('company uses its logo, homepage links, and Organization metadata without a role', async () => {
     const html = await page('blog/test-company');
     assert.equal((html.match(/<a href="\/">The Aha Company<\/a>/g) || []).length, 2);
-    assert.match(html, /class="art_avatar" src="\/images\/brand\/logo-512.png"/);
+    assert.match(html, /class="art_avatar" src="\/images\/brand\/author-avatar.png"/);
+    assert.match(html, /class="art_avatar48" src="\/images\/brand\/author-avatar.png"/);
+    // Keep the dedicated tight crop, not the padded 512px general-purpose logo.
+    const avatar = await readFile(new URL('public/images/brand/author-avatar.png', root));
+    assert.equal(avatar.readUInt32BE(16), 280);
+    assert.equal(avatar.readUInt32BE(20), 280);
     assert.doesNotMatch(html, /class="art_author-role"/);
     assert.deepEqual(articleAuthor(html), { '@type': 'Organization', name: 'The Aha Company', url: 'https://theaha.co/' });
   });
@@ -66,7 +71,7 @@ test('standalone authors render independently of team membership', async (t) => 
       assert.ok(!(await page('about')).includes(`/team/${id}`));
     }
     assert.ok(/data-row="author"[^>]*>The Aha Company<\/span>/.test(await page('work')), 'article lists resolve the company author name');
-    const html = await page('blog/scaffold-stellar-how-we-built-the-developer-toolkit');
+    const html = await page('blog/test-team');
     assert.equal(articleAuthor(html)['@type'], 'Person');
     assert.match(articleAuthor(html).url, /\/team\//);
   });

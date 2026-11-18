@@ -2,8 +2,8 @@
 title: 'Stellar Scaffold: how we built the developer toolkit'
 category: Ecosystems
 lede: Stellar Scaffold takes a team from an empty folder to contracts, a web front end, a local network and typed clients in one command. Why we built it as a Stellar CLI plugin, and what it took to make it production-grade.
-author: willem-wyndham
-authorBio: Chief Science Officer at The Aha Company. Architect of Stellar Scaffold and of the Stellar Registry contract.
+author: the-aha-company
+authorBio: Architects of Stellar Scaffold and Stellar Registry.
 date: November 4, 2026
 readMinutes: '3'
 cover: /images/covers/scaffold-stellar-how-we-built-the-developer-toolkit.webp
