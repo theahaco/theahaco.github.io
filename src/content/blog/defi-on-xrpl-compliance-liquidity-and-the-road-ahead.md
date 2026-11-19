@@ -25,7 +25,7 @@ Clawback went live in 2024. Deep Freeze, Credentials and Multi-Purpose Tokens (M
 
 ## Liquidity: what exists today
 
-The native exchange and its AMM give issued tokens a market without a separate protocol, and the Permissioned DEX lets institutions trade on the same ledger while enforcing KYC and AML rules, though it cannot draw on the AMM's pools yet. The market is still small: RWA.xyz counted $0.5B of tokenized assets on XRPL in October 2026, plus $1.3B of stablecoins, almost all of it Ripple's RLUSD.
+The native exchange and its AMM give issued tokens a market without a separate protocol, and the Permissioned DEX lets institutions trade on the same ledger while enforcing KYC and AML rules, though it cannot draw on the AMM's pools yet.
 
 ## What is still missing
 
