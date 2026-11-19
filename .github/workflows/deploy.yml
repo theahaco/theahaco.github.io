@@ -36,21 +36,19 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # https://theahaco.github.io + /website on the default Pages URL,
-          # https://theaha.co + "" once the custom domain is set.
-          SITE_URL: ${{ steps.pages.outputs.origin }}
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          # Production must not depend on potentially stale Pages metadata.
+          SITE_URL: https://theaha.co
+          BASE_PATH: /
 
       # A broken link, image or anchor stops the deploy: the live site keeps
       # its previous version until the file is fixed.
       - name: Check links, images and anchors
         run: npm run check
         env:
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          BASE_PATH: /
 
       # On theaha.co, refuse to publish a build that search engines would skip.
       - name: Check the production build is indexable
-        if: endsWith(steps.pages.outputs.host, 'theaha.co')
         run: |
           if grep -q 'name="robots" content="noindex"' dist/index.html dist/services/index.html; then echo '::error::The production build is marked noindex'; exit 1; fi
           grep -q '^Allow: /' dist/robots.txt
