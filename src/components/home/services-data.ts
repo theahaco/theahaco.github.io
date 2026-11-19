@@ -29,8 +29,6 @@ export interface Service {
   precedents: Precedent[];
   /** A short status after the precedents (e.g. "in build"), when one applies. */
   note?: string;
-  /** Review-overlay hook on the precedent line (data-rv). */
-  rv?: string;
 }
 
 const LOGOS = '/images/logos';
@@ -58,7 +56,6 @@ export const services: Service[] = [
     bullets: ['Transfer restrictions enforced onchain', 'Subscriptions and redemptions onchain', 'Custody integration'],
     precedents: [{ kind: 'nda', text: 'Regulated European asset manager', href: '/case-studies/nda-money-market-fund' }],
     note: 'A tokenized share class of a money market fund, in build',
-    rv: 'precedent-fund',
   },
   {
     id: 'protocol-integration',
@@ -113,7 +110,6 @@ export const services: Service[] = [
       { kind: 'nda', text: 'Top US commercial bank', href: NDA_BANK },
       { kind: 'mark', logo: `${LOGOS}/logo-light-stellar.svg`, text: 'SDF Architect Program', href: '/case-studies/stellar-development-foundation' },
     ],
-    rv: 'precedent-arch',
   },
 ];
 

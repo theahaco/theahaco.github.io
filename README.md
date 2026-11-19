@@ -58,14 +58,10 @@ Production is hosted by GitHub Pages from `theahaco/theahaco.github.io`:
 
 - `.github/workflows/deploy.yml` builds and publishes https://theaha.co/ on every push to `main` (including merges), every morning at 05:30 UTC and on demand. Scheduled runs may be delayed by GitHub.
 - Repository Settings → Pages uses **GitHub Actions**, custom domain **theaha.co**, and **Enforce HTTPS**.
-- The workflow explicitly builds for `https://theaha.co` at `/`: production is indexable, hides review notes and future articles, and enables configured analytics.
-- Pull requests run `.github/workflows/check.yml`, including production and preview-mode builds, but do not publish a hosted preview. For a local preview with future articles and review notes, run `SITE_URL=http://localhost:4321 npm run dev`.
+- The workflow explicitly builds for `https://theaha.co` at `/`: production is indexable, hides future articles, and enables configured analytics.
+- Pull requests run `.github/workflows/check.yml`, including production and preview-mode builds, but do not publish a hosted preview. For a local preview with future articles, run `SITE_URL=http://localhost:4321 npm run dev`.
 
 Safeguards: a build with a broken link, image or anchor fails before it is published, and a mandatory production check verifies indexability and the homepage canonical URL. Failed builds leave the previous deployment live. Only a build for `https://theaha.co` (`site.productionOrigin` in `src/data/site.ts`) is indexable; `www.theaha.co` and `http://` builds are treated as theaha.co. GitHub Pages ignores the legacy Cloudflare files `public/_headers` and `public/_redirects`; redirect stubs in `src/pages/` provide the supported page redirects. Deployment checks and operational notes: [`docs/LAUNCH.md`](docs/LAUNCH.md).
-
-### Review mode (preview only)
-
-Open points for the owner are listed in `src/data/review.ts`: each entry names a page, the elements it concerns and a note. On the preview every listed element is outlined and numbered, a panel in the bottom-left corner lists the notes, and `/review/` gathers them all. A production build renders none of it. The file is public, like the whole repository: notes say what to check, never confidential details. Once a point is settled, delete its entry; an empty list switches the overlay off.
 
 ## Contact form
 
