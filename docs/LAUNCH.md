@@ -28,7 +28,7 @@ If a build or check fails, the previous site remains live.
 
 Pull requests run production and preview-mode builds and link checks.
 They do not create hosted previews. Developers can inspect future articles
-and review notes locally with `SITE_URL=http://localhost:4321 npm run dev`.
+locally with `SITE_URL=http://localhost:4321 npm run dev`.
 
 ## Verify a deployment
 

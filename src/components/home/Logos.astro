@@ -42,11 +42,11 @@ const logos = [
   { name: 'Banque Delubac et Cie', src: '/images/logos/logo-light-delubac.svg', h: 25, w: 111, site: 'https://www.delubac.com/' },
 ];
 ---
-<section aria-labelledby="vc-label" class="vc" data-rv="logos">
+<section aria-labelledby="vc-label" class="vc">
   <div class="vc_inner">
     <p class="v-eyebrow" id="vc-label">Clients and partners</p>
     {voices.length > 0 && (
-      <div class="vc_voices" data-rv="home-quote">
+      <div class="vc_voices">
         <div class="vc_quotes">
           {voices.map((v) => (
             <figure class="vc_quote" id={`vc-q-${v.id}`}>

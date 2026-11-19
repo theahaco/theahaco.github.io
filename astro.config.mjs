@@ -32,7 +32,7 @@ export default defineConfig({
     sitemap({
       // Redirect stubs (/blog, networks without a page, /case-studies, /team)
       // and noindex pages stay out of the sitemap.
-      filter: (page) => !/\/(404|review(\/.*)?|blog|case-studies|case-studies\/pwc|team|networks\/canton|networks\/ethereum)\/?$/.test(page),
+      filter: (page) => !/\/(404|blog|case-studies|case-studies\/pwc|team|networks\/canton|networks\/ethereum)\/?$/.test(page),
     }),
     basePath(),
   ],
