@@ -1,18 +1,21 @@
 ---
-// Home page "Selected work": case studies tab (with quotes and the NDA block)
-// and articles tab. Webflow tabs markup, driven by src/scripts/tabs.js.
-import { caseStudies, posts, tools, pick, publicQuote, nobr } from '../lib/content';
+// Home page "Selected work": the case study tiles (WorkTile.astro, each with
+// its visual from src/lib/workVisuals.ts; the quotes are in the section under
+// the hero, home/Logos.astro), the block of the clients not named ("More work
+// for financial institutions") and the articles tab. Webflow tabs markup,
+// driven by src/scripts/tabs.js. The block's icons come from src/lib/visuals.ts.
+import { caseStudies, posts, pick, nobr, formatDate } from '../lib/content';
 import { homeFeaturedCases, homeNdaCases, homeArticles } from '../data/curation';
+import { caseVisual } from '../lib/visuals';
+import Icon from './Icon.astro';
+import WorkTile from './WorkTile.astro';
 
 const all = await caseStudies();
-const featured = pick(all, homeFeaturedCases);
 const nda = pick(all, homeNdaCases);
 // The three most recent articles, unless curation.ts pins a selection.
 const allPosts = await posts();
 const articles = homeArticles.length ? pick(allPosts, homeArticles) : allPosts.slice(0, 3);
-const toolList = await tools();
-import { site as siteData } from '../data/site';
-const production = !Astro.site || Astro.site.origin === siteData.productionOrigin;
+const iconbox = (tone: string) => ['v-iconbox', tone !== 'blue' && `v-iconbox--${tone}`];
 ---
 <div class="work_tabs w-tabs" data-current="Tab 1" data-duration-in="300" data-duration-out="100" data-easing="ease">
   <div aria-label="Work type" class="work_toggle w-tab-menu">
@@ -22,75 +25,29 @@ const production = !Astro.site || Astro.site.origin === siteData.productionOrigi
   <div class="work_panels w-tab-content">
     <div class="w-tab-pane w--tab-active" data-w-tab="Tab 1" id="work-cases">
       <div class="w-dyn-list">
-        <div class="work_list w-dyn-items" role="list">
-          {featured.map((cs) => {
-            const Row = cs.data.alliance ? 'div' : 'a';
-            return (
-            <div class="work_item w-dyn-item" role="listitem" data-client={cs.id}>
-              <div class="work_row">
-                <Row class:list={['work_case-link w-inline-block', cs.data.alliance && 'wk_static']} href={cs.data.alliance ? undefined : `/case-studies/${cs.id}`}>
-                  <div class="work_num"></div>
-                  <div class="work_stack">
-                    <div class="work_meta">
-                      {cs.data.eyebrow && <p class="work_eyebrow">{cs.data.eyebrow}</p>}
-                      <div class="work_yeararrow">
-                        {cs.data.year && <div>{cs.data.year}</div>}
-                        {!cs.data.alliance && <div aria-hidden="true" class="work_arrow">↗</div>}
-                      </div>
-                    </div>
-                    <h3 class="work_h3" set:html={nobr(cs.data.title)} />
-                    {cs.data.lede && <p class="work_para">{cs.data.lede}</p>}
-                  </div>
-                </Row>
-                {(() => { const q = publicQuote(cs.data.quote, production); return (
-                <figure class:list={['work_quote', !q.text && 'work_quote--plain']}>
-                  <p class="work_quote-label">{q.label}</p>
-                  {q.text && <blockquote class="work_blockquote">{q.text}</blockquote>}
-                  {(q.author || q.portrait) && <figcaption class="work_attrib">
-                    {q.portrait && <img alt={q.portraitAlt} class="work_portrait" loading="lazy" src={q.portrait} width="32" height="32" />}
-                    <div class="work_attrib-info">
-                      {q.author && <p class="work_attrib-name">{q.author}</p>}
-                      {q.role && <p class="work_attrib-role">{q.role}</p>}
-                    </div>
-                  </figcaption>}
-                  {q.logo && <img alt={q.logoAlt} class="work_client-logo" loading="lazy" src={q.logo} />}
-                </figure>
-                ); })()}
-              </div>
-            </div>
-          ); })}
-        </div>
+        <WorkTile ids={homeFeaturedCases} />
       </div>
       {nda.length > 0 && (
-        <div aria-label="Engagements under NDA" class="work_nda">
-          <p class="work_nda-label">Clients under NDA</p>
+        <div aria-labelledby="hw-more" class="hw_nda" role="group">
+          <p class="hw_nda-label" id="hw-more">More work for financial institutions</p>
           <div class="w-dyn-list">
-            <div class="work_nda-list w-dyn-items" role="list">
-              {nda.map((cs) => (
-                <div class="work_nda-item w-dyn-item" role="listitem">
-                  <a class="w-inline-block" data-nda-link="1" href={`/case-studies/${cs.id}`}>
-                    <div>
-                      {cs.data.eyebrow && <p class="work_nda-eyebrow">{cs.data.eyebrow}</p>}
-                      {cs.data.ndaSummary && <p class="work_nda-body">{cs.data.ndaSummary}</p>}
-                    </div>
+            <div class="hw_nda-list w-dyn-items" role="list">
+              {nda.map((cs) => {
+                const v = caseVisual(cs.id, cs.data);
+                return (
+                <div class="hw_nda-item w-dyn-item" role="listitem">
+                  <a class="hw_nda-link" data-nda-link="1" href={`/case-studies/${cs.id}`}>
+                    <span class:list={iconbox(v.tone)}><Icon name={v.icon} size={28} /></span>
+                    <span class="hw_nda-text">
+                      <span class="hw_nda-eyebrow">Client not named{cs.data.network && ` · ${cs.data.network}`}</span>
+                      {cs.data.ndaSummary && <span class="hw_nda-body">{cs.data.ndaSummary}</span>}
+                    </span>
+                    <span aria-hidden="true" class="hw_nda-arrow">↗</span>
                   </a>
                 </div>
-              ))}
+              ); })}
             </div>
           </div>
-        </div>
-      )}
-      {toolList.length > 0 && (
-        <div aria-label="Open-source tools" class="work_nda work_os" data-rv="home-tools">
-          <div class="work_os-head">
-            <p class="work_nda-label">Open source · 137 projects use these tools</p>
-            <a class="work_os-all" href="/open-source">See all tools →</a>
-          </div>
-          <ul class="work_os-list" role="list">
-            {toolList.map((tool) => (
-              <li><a class="faq_pill" href={`/open-source/${tool.id}`}>{tool.data.name}</a></li>
-            ))}
-          </ul>
         </div>
       )}
     </div>
@@ -99,14 +56,18 @@ const production = !Astro.site || Astro.site.origin === siteData.productionOrigi
         <div class="work_list w-dyn-items" role="list">
           {articles.map((post) => (
             <div class="work_item w-dyn-item" role="listitem">
-              <a class="work_article-link w-inline-block" href={`/blog/${post.id}`}>
-                <div class="work_num"></div>
+              <a class="work_article-link w-inline-block hw_link hw_link--article" href={`/blog/${post.id}`}>
+                <div class="work_num hw_num"></div>
                 <div class="work_stack">
                   <div class="work_meta">
                     {post.data.category && <p class="work_eyebrow">{post.data.category}</p>}
-                    <div aria-hidden="true" class="work_arrow">↗</div>
+                    <div class="work_yeararrow">
+                      {post.data.date && <div>{formatDate(post.data.date, 'short')}</div>}
+                      <div aria-hidden="true" class="work_arrow">↗</div>
+                    </div>
                   </div>
-                  <h3 class="work_article-h3">{post.data.title}</h3>
+                  <h3 class="work_article-h3" set:html={nobr(post.data.title)} />
+                  {post.data.lede && <p class="work_para">{post.data.lede}</p>}
                 </div>
               </a>
             </div>
@@ -117,3 +78,39 @@ const production = !Astro.site || Astro.site.origin === siteData.productionOrigi
   </div>
   <a class="btn-secondary work_all" href="/work">See all work →</a>
 </div>
+
+<style>
+  /* The case tiles have their styles in WorkTile.astro */
+  a.hw_link:hover .work_article-h3 { color: var(--green-ink); }
+  .work_article-h3 { transition: color .2s; }
+
+  /* More work for financial institutions (clients not named): three framed
+     cells sharing their borders */
+  .hw_nda { margin-top: 32px; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--white); overflow: hidden; }
+  .hw_nda-label { display: flex; align-items: center; gap: 10px; margin: 0; padding: 16px 28px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .08em; line-height: 1.4; text-transform: uppercase; --icon-tint: var(--vibrant-green); --icon-tint-opacity: .55; }
+  .hw_nda-label :global(.icon) { color: var(--deep-blue); }
+  .hw_nda-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hw_nda-item + .hw_nda-item { border-left: 1px solid var(--line); }
+  .hw_nda-link { position: relative; display: flex; flex-direction: column; gap: 16px; height: 100%; padding: 28px; color: inherit; text-decoration: none; transition: background-color .2s ease; }
+  .hw_nda-link:hover { background: var(--tint-paper); }
+  /* The box clips its corners: the focus ring goes inside the cell */
+  .hw_nda-link:focus-visible { outline-offset: -4px; border-radius: 4px; }
+  .hw_nda-text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .hw_nda-eyebrow { color: var(--muted); font-size: 12px; font-weight: 600; letter-spacing: .08em; line-height: 1.4; text-transform: uppercase; transition: color .2s; }
+  .hw_nda-link:hover .hw_nda-eyebrow { color: var(--green-ink); }
+  .hw_nda-body { color: var(--ink-2); font-size: 16px; line-height: 1.5; text-wrap: pretty; }
+  .hw_nda-arrow { position: absolute; top: 24px; right: 24px; color: var(--deep-blue); font-size: 18px; line-height: 1; opacity: .45; transition: opacity .2s ease, transform .2s ease; }
+  .hw_nda-link:hover .hw_nda-arrow { opacity: 1; }
+  @media (prefers-reduced-motion: no-preference) { .hw_nda-link:hover .hw_nda-arrow { transform: translate(2px, -2px); } }
+  @media (max-width: 991px) {
+    .hw_nda-list { grid-template-columns: minmax(0, 1fr); }
+    .hw_nda-item + .hw_nda-item { border-left: 0; border-top: 1px solid var(--line); }
+    .hw_nda-link { flex-direction: row; align-items: flex-start; gap: 20px; padding: 24px 56px 24px 28px; }
+  }
+  @media (max-width: 479px) {
+    .hw_nda-label { padding: 14px 20px; }
+    .hw_nda-link { flex-direction: row; gap: 16px; padding: 20px 44px 20px 20px; }
+    .hw_nda-link :global(.v-iconbox) { width: 40px; height: 40px; border-radius: 10px; }
+    .hw_nda-arrow { top: 20px; right: 18px; }
+  }
+</style>

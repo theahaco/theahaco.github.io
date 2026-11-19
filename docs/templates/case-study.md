@@ -20,20 +20,22 @@ cta: Issuing a stablecoin? Talk to the engineers who built this one.
 # Heading of the call-to-action band at the bottom.
 
 client: Acme Bank
+logo: ''
+# Optional image path for team engagement rows; leave empty for an NDA client.
 nda: false
-# true shows the "Under NDA" pill; then use a description as client ("Top US commercial bank").
+# true shows the "Client not named" pill; then use a description as client ("Top US commercial bank").
 ndaSummary: ''
 # For NDA cases listed on the home page: one line.
 
 workTitle: A regulated stablecoin on Stellar
-workLine: 'One line for the Work page list.'
+workLine: 'One line for its tile on the Work page.'
 audience: Financial institutions
 # Work page filter: Financial institutions, Protocols and products, or Ecosystems and open source.
 network: Stellar
 # Stellar, XRPL, Canton or Multi-network.
 year: 2026
 order: 100
-# Position on the Work page (lower first). The home page selection is in src/data/curation.ts.
+# Position on the Work page, after the cases listed in src/data/curation.ts (lower first). The home page selection is there too.
 
 facts:
 - label: Client
@@ -112,8 +114,6 @@ quote:
   role: ''
   portrait: ''
   portraitAlt: ''
-  logo: ''
-  logoAlt: ''
 
 draft: false
 ---

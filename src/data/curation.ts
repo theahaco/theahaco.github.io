@@ -2,15 +2,34 @@
 // Each list holds content slugs (file names without .md), in display order.
 
 /** Home page, "Selected work" > Case studies. */
-// Case studies with a testimonial first, then the others.
-export const homeFeaturedCases = ["stellar-development-foundation", "lifi", "ripple", "societe-generale-forge", "pwc"];
+// Société Générale-FORGE first (a regulated issuer, for the banks reading the
+// page), then LI.FI, Talwex and Ripple, two tiles across. The Stellar
+// Development Foundation is left out here: its tools fill the open-source
+// band further down. Each tile's visual: src/lib/workVisuals.ts.
+export const homeFeaturedCases = ["societe-generale-forge", "lifi", "talwex", "ripple"];
 
-/** Home page, "Client under NDA" block under the case studies. */
+/** Work page, the case study tiles: the home page's four first, in the same
+ * order, then the others. A case study not listed here comes after them, by
+ * its `order` field. The Stellar Development Foundation closes the tiles, with
+ * the open-source tools listed under it; the PwC US alliance is always last,
+ * as one row without a link (src/components/WorkRows.astro). */
+export const workOrder = [...homeFeaturedCases, "nda-settlement-stablecoin", "starknet", "nda-money-market-fund", "nda-real-estate-debt-fund", "stellar-development-foundation", "pwc"];
+
+/** Work page: the tiles drawn across both columns, text beside the visual. */
+export const workWideCases = ["stellar-development-foundation"];
+
+/** Home page, the section under the hero: the case studies whose quotes it
+ * shows, one at a time (the first by default), over the client tiles. The
+ * rows of "Selected work" show their client's logo, not the quote. */
+export const homeQuotes = ["stellar-development-foundation", "lifi", "ripple"];
+
+/** Home page, "More work for financial institutions" block under the case
+ * studies: the clients not named. */
 export const homeNdaCases = ["nda-settlement-stablecoin", "nda-money-market-fund", "nda-real-estate-debt-fund"];
 
 /** "More work" at the bottom of a case study: two other case studies, those for
  * the same audience first, in this order. Alliances (PwC US) are never listed. */
-export const moreWork = ["societe-generale-forge", "lifi", "stellar-development-foundation", "nda-settlement-stablecoin", "nda-money-market-fund", "ripple", "nda-real-estate-debt-fund"];
+export const moreWork = ["societe-generale-forge", "lifi", "talwex", "stellar-development-foundation", "nda-settlement-stablecoin", "nda-money-market-fund", "ripple", "nda-real-estate-debt-fund"];
 
 /** Pages whose "More work" is chosen by hand: case study slugs, or tool pages
  * written "/open-source/<tool>". Ripple's page stays on XRPL. */
@@ -27,7 +46,7 @@ export const homeArticles: string[] = [];
 export const teamPanelOrder = ["hugo-heer", "roberson-costa-dresch", "zach-fedor", "pamphile-roy", "elizabeth-engelman", "pamela-selle", "fabricius-zatti", "willem-wyndham", "chad-ostrowski", "enzo-soyer"];
 
 /** Engagement rows on team pages (case studies whose `team` includes the person). */
-export const engagementOrder = ["nda-settlement-stablecoin", "societe-generale-forge", "lifi", "pwc", "stellar-development-foundation", "ripple", "nda-real-estate-debt-fund", "nda-money-market-fund"];
+export const engagementOrder = ["nda-settlement-stablecoin", "societe-generale-forge", "lifi", "talwex", "pwc", "stellar-development-foundation", "ripple", "nda-real-estate-debt-fund", "nda-money-market-fund"];
 
 /** "Other networks" cards at the bottom of a network page. */
 export const otherNetworksOrder = ["ethereum", "canton", "xrpl", "stellar"];

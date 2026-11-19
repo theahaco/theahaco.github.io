@@ -35,6 +35,12 @@ metrics:
 - figure: '18'
   label: 'Public repositories (November 2026): contracts, SDK, provider and council platforms, wallet'
   receipt: https://github.com/Moonlight-Protocol
+visual:
+  kind: image
+  image: /images/tools/moonlight.webp
+  alt: 'Moonlight’s site on a phone: “Private web3 transactions. Built for compliance.”'
+  tone: dark
+  caption: 'moonlightprotocol.io. Limited mainnet release since July 2026, for invite-only pilots.'
 sections:
 - id: what-it-does
   title: What it does
@@ -61,7 +67,9 @@ sections:
     - **Browser wallet**: beta.
     - **Compliance connectors** (KYC vendors, screening, approval workflows, reporting exports): built per institution.
 
-    The audit report and its fixes are public, with the hashes that match the contracts deployed on mainnet. We publish no usage figure yet.
+    The audit report and its fixes are public, with the hashes that match the contracts deployed on mainnet.
+
+    Moonlight is ready. [Schedule a call](/contact) to see how we can make it work for you.
 - id: recognition
   title: Recognition
   body: |-

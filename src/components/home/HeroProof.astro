@@ -1,0 +1,145 @@
+---
+// Home hero: the proof panel. Three engagements live on mainnet, each row
+// linking to its case study, with the facts of src/content/case-studies
+// (status, the EURCV figure and its receipt). LI.FI live since Q3 2026, per
+// the CEO (November 2026; LI.FI announced it live in its August 2026 update).
+// The bank's figure is its total assets, $703.0B at September 30, 2026 in its
+// own Q3 2026 earnings release, rounded down (the bank stays unnamed). LI.FI's
+// figure is its own total transfer volume, all chains ($80B+ on li.fi, read
+// November 6, 2026). The card names no network. Each row's title says what is
+// live, never a name (as the case studies word it), the client under it. The
+// round glyph is the kind of asset, drawn like a token icon (not the asset's
+// own logo): a euro coin, a settlement coin, a cross-chain route; deep blue for financial institutions, green for protocols. Under the
+// rows, the card's totals: the key figures of src/data/site.ts (deployments
+// on mainnet, third-party security audits). The project count is in the
+// open-source band, the client logos in the section under the hero.
+import { keyFigures } from '../../data/site';
+
+const receipt = 'https://stellar.expert/explorer/public/asset/EURCV-GCEYGIVOLAVBF2TG2RUSGTUJCIN75KEX3NGLMY4VPL4GFE5L355AXW3G';
+---
+<figure aria-label="Live on mainnet" class="hp">
+  <div aria-hidden="true" class="hp_grid v-blueprint"></div>
+  <div aria-hidden="true" class="hp_sheet hp_sheet--back"></div>
+  <div aria-hidden="true" class="hp_sheet hp_sheet--mid"></div>
+  <div class="hp_card">
+    <div class="hp_head">
+      <p class="hp_title">Live on mainnet</p>
+    </div>
+    <ul class="hp_rows" role="list">
+      <li class="hp_row">
+        <span aria-hidden="true" class="hp_av"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="23" fill="#1A3B60" /><circle cx="23" cy="23" r="19" fill="none" stroke="#fff" stroke-opacity=".22" /><text x="23" y="30.5" fill="#fff" font-family="Space Grotesk, system-ui, sans-serif" font-size="21" font-weight="600" text-anchor="middle">€</text></svg></span>
+        <p class="hp_name"><a class="hp_link" href="/case-studies/societe-generale-forge">Regulated euro stablecoin<span aria-hidden="true" class="hp_arrow">&nbsp;→</span></a></p>
+        <p class="hp_desc">Société Générale-FORGE</p>
+        <div class="hp_meta">
+          <span class="hp_status"><span aria-hidden="true" class="v-live"></span><span data-rv="card-eurcv">Live since Q1 2026</span></span>
+        </div>
+        <div class="hp_fig"><span class="hp_figv">€20M+</span><span class="hp_figl">issued<a aria-label="Receipt: EURCV on the Stellar explorer" class="receipt-badge hp_receipt" href={receipt} title="Receipt">✓</a></span></div>
+      </li>
+      <li class="hp_row">
+        <span aria-hidden="true" class="hp_av"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="23" fill="#1A3B60" /><circle cx="23" cy="23" r="19" fill="none" stroke="#fff" stroke-opacity=".22" /><path d="M15.5 19.5h15m-3.6-3.6 3.6 3.6-3.6 3.6M30.5 26.5h-15m3.6-3.6-3.6 3.6 3.6 3.6" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.1" /></svg></span>
+        <p class="hp_name"><a class="hp_link" href="/case-studies/nda-settlement-stablecoin">Internal settlement stablecoin<span aria-hidden="true" class="hp_arrow">&nbsp;→</span></a></p>
+        <p class="hp_desc">Top US commercial bank</p>
+        <div class="hp_meta">
+          <span class="hp_status"><span aria-hidden="true" class="v-live"></span><span data-rv="card-bank">Live since Q3 2026</span></span>
+        </div>
+        <div class="hp_fig" data-rv="card-bank-fig"><span class="hp_figv">$700B+</span><span class="hp_figl">bank assets</span></div>
+      </li>
+      <li class="hp_row">
+        <span aria-hidden="true" class="hp_av"><svg viewBox="0 0 46 46"><circle cx="23" cy="23" r="23" fill="#367A12" /><circle cx="23" cy="23" r="19" fill="none" stroke="#fff" stroke-opacity=".22" /><path d="M16.5 28.5c0-6.5 13-3.5 13-11" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2.1" /><circle cx="16.5" cy="29.5" r="3" fill="#367A12" stroke="#fff" stroke-width="2.1" /><circle cx="29.5" cy="16.5" r="3.2" fill="#fff" /></svg></span>
+        <p class="hp_name"><a class="hp_link" href="/case-studies/lifi">Cross-chain routing<span aria-hidden="true" class="hp_arrow">&nbsp;→</span></a></p>
+        <p class="hp_desc">LI.FI</p>
+        <div class="hp_meta">
+          <span class="hp_status"><span aria-hidden="true" class="v-live"></span><span data-rv="card-lifi">Live since Q3 2026</span></span>
+        </div>
+        <div class="hp_fig" data-rv="card-lifi-fig"><span class="hp_figv">$80B+</span><span class="hp_figl">total transfer volume</span></div>
+      </li>
+    </ul>
+    <ul aria-label="Key figures" class="hp_tot" role="list">
+      <li class="hp_totcell" data-rv="stat-deploy"><span class="hp_totv">{keyFigures.deployments.replace('+', '')}<span class="hp_totplus">+</span></span><span class="hp_totl">Deployments on mainnet</span></li>
+      <li class="hp_totcell" data-rv="stat-audits"><span class="hp_totv">{keyFigures.audits}</span><span class="hp_totl">Third-party security audits</span></li>
+    </ul>
+  </div>
+</figure>
+
+<style>
+  /* Stage: the card on two offset sheets, over a faint blueprint grid */
+  .hp { position: relative; margin: 0; padding: 22px 26px 36px 4px; container-type: inline-size; }
+  .hp_grid { position: absolute; inset: -64px -40px -72px -72px; z-index: 0; -webkit-mask-image: radial-gradient(closest-side, #000 45%, transparent); mask-image: radial-gradient(closest-side, #000 45%, transparent); }
+  .hp_sheet { position: absolute; z-index: 0; border: 1px solid var(--line); border-radius: 20px; }
+  .hp_sheet--back { inset: 48px 0 8px 30px; background: var(--tint-pink); }
+  .hp_sheet--mid { inset: 35px 13px 22px 17px; background: var(--tint-blue); }
+
+  .hp_card { position: relative; z-index: 1; background: var(--white); border: 1px solid var(--line-strong); border-radius: var(--radius-lg); box-shadow: var(--shadow-2); }
+  .hp_head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; background: var(--deep-blue); border-radius: 15px 15px 0 0; color: var(--white); }
+  .hp_title { margin: 0; font-family: var(--font-display); font-size: 22px; font-style: italic; line-height: 1.2; }
+
+  .hp_rows { margin: 0; padding: 0; list-style: none; }
+  .hp_row { position: relative; display: grid; grid-template-columns: 46px minmax(0, 1fr) auto; grid-template-areas: 'tile name fig' 'tile desc fig' 'tile meta fig'; column-gap: 16px; align-items: center; padding: 18px 20px; border-top: 1px solid var(--line); transition: background-color .2s; }
+  .hp_row:first-child { border-top: 0; }
+  .hp_row:hover { background: var(--paper); }
+
+  .hp_av { grid-area: tile; align-self: center; display: block; width: 46px; height: 46px; }
+  .hp_av svg { display: block; width: 100%; height: 100%; }
+
+  .hp_name { grid-area: name; margin: 0; min-width: 0; font-size: 16px; font-weight: 600; line-height: 1.3; color: var(--deep-blue); }
+  .hp_link { color: inherit; text-decoration: none; }
+  /* The whole row is the link to the case study; the receipt stays its own link above it */
+  .hp_link::after { content: ''; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+  .hp_link:focus-visible { outline: none; }
+  .hp_link:focus-visible::after { outline: 2px solid var(--green-ink); outline-offset: -3px; }
+  .hp_arrow { position: relative; left: 0; font-weight: 500; color: var(--muted); transition: left .2s, color .2s; }
+  .hp_row:hover .hp_link { color: var(--green-ink); }
+  .hp_row:hover .hp_arrow { left: 3px; color: var(--green-ink); }
+
+  .hp_desc { grid-area: desc; margin: 4px 0 0; font-size: 15px; line-height: 1.4; color: var(--muted); }
+  .hp_meta { grid-area: meta; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; }
+  .hp_net, .hp_status { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 9px 0 7px; border-radius: 999px; font-size: 12px; font-weight: 600; line-height: 1; white-space: nowrap; }
+  .hp_net { border: 1px solid var(--line); background: var(--white); color: var(--ink); }
+  .hp_status { gap: 7px; padding: 0 10px 0 9px; background: var(--tint-green); color: #2f6e10; }
+  .hp_status .v-live { width: 7px; height: 7px; }
+
+  .hp_fig { grid-area: fig; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; justify-self: end; align-self: center; color: var(--deep-blue); }
+  .hp_figv { font-size: 26px; font-weight: 500; line-height: 1; letter-spacing: -.025em; white-space: nowrap; }
+  .hp_figl { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; line-height: 1; color: var(--muted); }
+  .hp_receipt { z-index: 2; }
+
+  /* The card's totals: the key figures, side by side on a blue tint */
+  .hp_tot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line-strong); border-radius: 0 0 15px 15px; background: var(--tint-blue); }
+  .hp_totcell { display: flex; align-items: center; gap: 14px; min-width: 0; padding: 17px 20px 18px; }
+  .hp_totcell + .hp_totcell { border-left: 1px solid var(--line-strong); }
+  .hp_totv { flex-shrink: 0; color: var(--deep-blue); font-size: 30px; font-weight: 500; line-height: 1; letter-spacing: -.03em; white-space: nowrap; }
+  .hp_totplus { color: var(--green-ink); }
+  .hp_totl { min-width: 0; color: var(--ink-2); font-size: 13px; line-height: 1.35; text-wrap: balance; }
+
+  @media (prefers-reduced-motion: reduce) { .hp_row, .hp_arrow { transition: none; } .hp_row:hover .hp_arrow { left: 0; } }
+  .hp_sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+  /* Narrow panel (1024 px): the figure under the facts */
+  @container (max-width: 460px) {
+    .hp_row { grid-template-columns: 42px minmax(0, 1fr); grid-template-areas: 'tile name' 'tile desc' 'tile meta' 'tile fig'; column-gap: 14px; padding: 16px 18px 16px 16px; }
+    .hp_av { align-self: start; width: 42px; height: 42px; margin-top: 2px; }
+    .hp_fig { flex-direction: row; align-items: center; gap: 8px; justify-self: start; margin-top: 12px; }
+    .hp_head { padding: 14px 18px; }
+    .hp_totcell { flex-direction: column; align-items: flex-start; gap: 7px; padding: 15px 16px 16px; }
+    .hp_totv { font-size: 26px; }
+  }
+  /* Phones: the tile next to the name, the facts at full width under it */
+  @container (max-width: 380px) {
+    .hp_row { grid-template-columns: 40px minmax(0, 1fr); grid-template-areas: 'tile name' 'desc desc' 'meta meta' 'fig fig'; column-gap: 12px; padding: 16px; }
+    .hp_av { align-self: center; width: 40px; height: 40px; margin-top: 0; }
+    .hp_desc { margin-top: 12px; }
+    .hp_head { padding: 13px 16px; }
+    .hp_title { font-size: 20px; }
+  }
+
+  @media (max-width: 991px) {
+    .hp { max-width: 640px; padding: 22px 22px 36px 0; }
+    .hp_grid { inset: -40px -12px -48px -12px; }
+  }
+  @media (max-width: 479px) {
+    .hp { padding: 20px 14px 30px 0; }
+    .hp_sheet--back { inset: 44px 0 6px 26px; }
+    .hp_sheet--mid { inset: 32px 7px 18px 13px; }
+    .hp_grid { inset: -24px -24px -32px -24px; }
+  }
+</style>

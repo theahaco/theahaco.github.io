@@ -2,14 +2,12 @@
 title: Why Stellar is the right chain for tokenization
 category: Institutions
 lede: For a regulated issuer, the question is not which chain is fastest. It is where the controls a regulator expects are part of the ledger, where custodians already are, and where counterparties have already gone. On those three questions, Stellar is hard to beat.
-author: enzo-soyer
-authorName: Enzo Soyer
-authorRole: Chief Executive Officer
+author: the-aha-company
+authorBio: Stellar Community Fund reviewers and co-authors of SEP-61.
 date: November 9, 2026
 readMinutes: '3'
 cover: /images/covers/why-stellar-is-the-right-chain-for-tokenization.webp
 coverCaption: ''
-authorBio: CEO of The Aha Company. Stellar Community Fund reviewer and co-author of SEP-61.
 relatedWork: societe-generale-forge
 relatedWorkLabel: EURCV, a regulated euro stablecoin on Stellar
 audience: Financial institutions
@@ -21,9 +19,11 @@ description: 'For a regulated issuer, the right chain is where controls are part
 
 On Stellar, a token issued with the network's built-in functions carries issuer controls at the protocol level: authorization required, so only approved accounts can hold it, then freeze and clawback. A regulated issuer gets the controls its compliance team asks for without writing or auditing token code. Transactions settle in about five seconds, for a fraction of a cent.
 
+EURCV, Société Générale-FORGE's regulated euro stablecoin, works this way. We built it with SG-FORGE’s compliance team on the built-in freeze and clawback: an address is frozen when it is flagged, with no contract in the transfer path.
+
 ## Smart contracts where the rules need them
 
-Since Soroban, every Stellar asset also has a smart-contract interface, the Stellar Asset Contract, so an issuer can add rules the built-in controls cannot express, and take them off later without reissuing the asset. EURCV, Société Générale-FORGE's regulated euro stablecoin, launched with a governance layer we built on Soroban, with controls agreed with SG-FORGE’s compliance team. Its compliance now runs on the built-in controls, applied when an address is flagged, and it is still the same native Stellar asset.
+Since Soroban, every Stellar asset also has a smart-contract interface, the Stellar Asset Contract, so an issuer can add rules the built-in controls cannot express, and take them off later without reissuing the asset.
 
 ## Institutions are already there
 

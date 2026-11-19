@@ -22,7 +22,7 @@
 summary.faq_q::-webkit-details-marker{display:none}
 summary.faq_q{list-style:none}
 details[open]>summary>.faq_icon{transform:rotate(45deg)}
-h1,h2,h3,.text-lead,.hero_lead,.faq_answer,.footer_desc,.work_para,.cta_h2,.blog_excerpt,.art_lede{text-wrap:pretty}
+h1,h2,.cta_h2{text-wrap:balance}h3,.text-lead,.hero_lead,.faq_answer,.footer_desc,.work_para,.blog_excerpt,.art_lede{text-wrap:pretty}
 body{-webkit-font-smoothing:antialiased}
 .art_related-link::after{content:" \2197"}
 .blog_richtext>*{margin:0}
@@ -44,7 +44,12 @@ body{-webkit-font-smoothing:antialiased}
 .cs_receipts a{text-decoration:none;color:#14243A}
 .cs_receipts a:hover{color:#367A12}
 .cs_receipts p{margin:0}
-.cs_teamcard .cs_cardlabel{color:#1A3B60}
+/* Side cards of case, tool and article pages: white on a hairline, as the
+   cards and panels of Home and Services; a link card's link set like the
+   /services index labels, on the green rule of the /services offer items */
+.cs_card,.cs_teamcard,.art_related,.art_authorcard{background-color:var(--white);border:1px solid var(--line);border-radius:var(--radius-lg)}
+.art_related-link{padding-left:16px;border-left:2px solid var(--vibrant-green);font-family:var(--font-ui);font-size:18px;font-style:normal;font-weight:600;line-height:1.3}
+@media (max-width:767px){.art_related-link{font-size:17px}}
 .cs_figmark:hover{background-color:#367A12}
 .cs_quotelabel:empty{display:none}
 .cs_teamrow:hover .cs_teamname{color:#367A12}
@@ -133,6 +138,8 @@ a.work_case-link[href]:hover .work_h3{color:#367A12}
 .tl_codebar i:nth-child(3){background:#47A019}
 .tl_codefile{margin-left:12px;font:14px ui-monospace,Menlo,monospace;color:rgba(255,255,255,.62)}
 .tl_pre{margin:0;padding:24px 28px;overflow-x:auto;font:15px/1.7 ui-monospace,Menlo,monospace;color:#E8EEF6;background:transparent;border-radius:0}
+@media (max-width:599px){.tl_pre{padding:18px 16px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.6}}
+.tl_h1 .v-soft{display:block}
 .tl_str{color:#8FD068}
 .tl_chart{width:100%;max-width:820px;margin:0 auto;padding:28px;background:#fff;border:1px solid rgba(26,59,96,.14);border-radius:8px;display:flex;flex-direction:column;gap:20px}
 .tl_charttitle{margin:0;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#5A6B7E}
@@ -195,7 +202,7 @@ a.work_case-link[href]:hover .work_h3{color:#367A12}
 /* Calendly inline embed: the iframe fills its 700 px box (it was 150 px tall),
    and gets the full width under 992 px (Calendly needs 320 px at least) */
 .calendar_widget .w-embed{height:100%}
-@media (max-width:991px){.contact-grid{grid-template-columns:1fr}}
+@media (max-width:991px){.contact-grid{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:479px){.card.calendar{padding:20px 8px}.card.calendar>.card_h2,.card.calendar>.calendar_fallback{padding:0 8px}}
 /* Case studies and tool pages under 992 px: each heading above its own text */
 @media (max-width:991px){.cs_section>.cs_h2{grid-row:1}.cs_section>.blog_richtext{grid-row:2}}
@@ -249,9 +256,6 @@ html{scroll-padding-top:125px}
 @media (max-width:767px){.nav_logo{margin-left:-8px}}
 /* Hyphenated names stay on one line in display headings */
 .nobr{white-space:nowrap}
-/* Network marks in the facts: the symbol only (the name is written next to it) */
-.cs_netmark{width:16px;height:16px;object-fit:cover;object-position:left center}
-.cs_netmark[src*="xrpl"]{width:21px}
 /* Hover feedback on list rows, FAQ questions and filter chips */
 .more_title,.networks_h3,.faq_q{transition:color .2s}
 a.more_row:hover .more_title,a.networks_row:hover .networks_h3,summary.faq_q:hover{color:var(--green-ink)}
@@ -286,3 +290,6 @@ a.more_row:hover .more_title,a.networks_row:hover .networks_h3,summary.faq_q:hov
 .cs_dd-net .cs_netmark{margin-top:4px}
 /* Case study header images on phones: square, on the diagram (the title is already the H1) */
 @media (max-width:767px){.cs_heroimg{aspect-ratio:1/1;object-fit:cover;object-position:100% 50%}}
+
+/* Home: the open-source band runs straight into the closing band (both deep
+   blue), so a rule parts them, at the band's content width */

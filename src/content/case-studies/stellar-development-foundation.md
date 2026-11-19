@@ -1,7 +1,7 @@
 ---
 title: Stellar Development Foundation
 metaTitle: 'Stellar Development Foundation: ecosystem tooling'
-order: 1
+order: 3
 eyebrow: Ecosystem · Stellar
 lede: 'We build and maintain tooling the Stellar ecosystem runs on: Stellar Scaffold, the Stellar CLI plugin system, Stellar Registry and Nido, our open-source passkey wallet. Our principal engineer Fabricius Zatti is a core contributor to the Stellar Architect Program.'
 cta: Building developer tooling for an ecosystem? Talk to the team that maintains Stellar’s.
@@ -44,7 +44,13 @@ metrics:
 sections:
 - id: challenge
   title: Challenge
-  body: 'When Stellar added smart contracts with Soroban, it needed developer tooling to match: a command line that builds, deploys and calls contracts, typed clients for front ends, and a way to start a project without assembling it by hand. The Foundation looked for teams that could build that tooling, and keep maintaining it.'
+  body: 'When Stellar added smart contracts with Soroban, it needed developer tooling to match: a command line that builds, deploys and calls contracts, typed clients for frontends, and a way to start a project without assembling it by hand. The Foundation looked for teams that could build that tooling, and keep maintaining it.'
+- id: devx-audit
+  title: DevX audit
+  body: |-
+    In 2022, as Stellar was adding smart contracts with Soroban, we ran a DevX audit of its developer path. It produced three documents for the Stellar team: a proposal for the organization and behavior of the Soroban CLI, a deeper design of its `invoke` command, and an analysis of the Soroban docs, with a new structure and the pages they were missing.
+
+    The Stellar team took up the proposals, and we have shipped many of their recommendations together since: the CLI's plugin system and its TypeScript bindings came out of that work.
 - id: solution
   title: Solution
   body: |-
@@ -55,7 +61,7 @@ sections:
   title: Architecture highlights
   body: |-
     - [Stellar CLI](/open-source/stellar-cli): plugin system, typed contract calls, SEP-5 key management, Ledger signing
-    - [Stellar Scaffold](/open-source/stellar-scaffold): one command from an empty folder to contracts, a front end, a local network and typed clients
+    - [Stellar Scaffold](/open-source/stellar-scaffold): one command from an empty folder to contracts, a frontend, a local network and typed clients
     - [Stellar Registry](/open-source/stellar-registry): an onchain package manager for Soroban contracts, audited by Veridise with no findings, on mainnet since July 2026
     - [Nido](/open-source/nido): our open-source passkey wallet, in a curated mainnet release since October 2026
     - JavaScript SDK: contract.Client and AssembledTransaction in Stellar's official SDK
@@ -88,13 +94,12 @@ quote:
   label: ''
   text: '“We searched far and wide for capable teams to help us. We found one.”'
   author: Tomer Weller
-  role: Chief Product Officer, Stellar Development Foundation · On the launch of Soroban
+  role: Chief Product Officer, Stellar Development Foundation
   portrait: /images/people/tomer-weller.webp
   portraitAlt: Tomer Weller
-  logo: /images/logos/logo-light-stellar.svg
-  logoAlt: Stellar Development Foundation
 ndaSummary: ''
 client: Stellar Development Foundation
+logo: /images/logos/logo-light-stellar.svg
 nda: false
 workTitle: Stellar Scaffold, Stellar CLI plugin system, Stellar Registry, Nido
 workLine: Tooling the Stellar ecosystem runs on, maintained as public goods, and a core contributor to the Stellar Architect Program.

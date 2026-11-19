@@ -1,9 +1,13 @@
 ---
 // One page per open-source tool (src/content/tools), laid out like a case
 // study: facts, dated figures with receipts, a visual, the story, builders.
+import Icon from '../../components/Icon.astro';
+import NetMark from '../../components/home/NetMark.astro';
+import ToolStage from '../../components/tools/ToolStage.astro';
+import { factIcon } from '../../lib/factIcons';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Cta from '../../components/Cta.astro';
-import { tools, team, posts, networks, md, mdInline, wrapTables, unlinkPosts, networkMarks, ogImageFor, nobr } from '../../lib/content';
+import { tools, team, posts, networks, md, mdInline, wrapTables, unlinkPosts, networkIds, ogImageFor, nobr } from '../../lib/content';
 import { site } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -27,11 +31,11 @@ const title = d.metaTitle || `${d.name}: ${d.category} | The Aha Company`;
 const description = d.description || d.lede;
 const cta = d.cta || 'Building on Stellar or XRPL? Talk to the engineers who write the tooling.';
 // Zod 4 returns a default object as is, without the inner defaults.
-const v = { kind: '', image: '', alt: '', tone: 'dark', filename: '', code: '', title: '', bars: [] as { label: string; sub: string; value: number; display: string; highlight: boolean }[], caption: '', ...d.visual };
+const v = { kind: '', image: '', alt: '', tone: 'dark' as 'dark' | 'light', filename: '', code: '', title: '', bars: [] as { label: string; sub: string; value: number; display: string; highlight: boolean }[], lines: [] as string[], label: '', caption: '', ...d.visual };
 const maxBar = Math.max(1, ...v.bars.map((b) => b.value));
 
 // Network marks for "Stellar", "XRPL and Stellar"...
-const marksFor = (value: string) => value.split(/,| and /).map((n) => networkMarks[n.trim()]).filter(Boolean);
+const marksFor = (value: string) => value.split(/,| and /).map((n) => networkIds[n.trim()]).filter(Boolean);
 // ...and each network name links to its page, when it has one.
 const networkPages = new Map((await networks()).filter((n) => n.data.heading).map((n) => [n.data.name, `/networks/${n.id}`]));
 const netParts = (value: string) => value.split(/(,\s*| and )/).map((part) => ({ part, href: networkPages.get(part.trim()) }));
@@ -68,7 +72,7 @@ const crumbs = {
 };
 const json = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
 ---
-<BaseLayout title={title} description={description} image={ogImageFor(tool.id) || (v.kind === 'image' && v.image) || undefined} imageAlt={v.kind === 'image' ? v.alt : undefined}>
+<BaseLayout title={title} description={description} image={ogImageFor(tool.id) || (v.kind === 'image' && v.image) || undefined} imageAlt={ogImageFor(tool.id) ? d.title : (v.kind === 'image' ? v.alt : undefined)}>
   <Fragment slot="head">
     <script type="application/ld+json" set:html={json(ld)} />
     <script type="application/ld+json" set:html={json(crumbs)} />
@@ -79,8 +83,9 @@ const json = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
         <a class="art_back" href="/open-source">← All open-source tools</a>
         <div class="cs_headgrid">
           <div class="cs_intro" data-tl="intro">
-            <p class="cs_eyebrow">Open source · {d.category}</p>
-            <h1 class="art_h1" set:html={nobr(d.title)} />
+            <p class="v-eyebrow">Open source · {d.category}</p>
+            {/* Two tones, as the Home and Services titles: the name, then the rest */}
+            <h1 class="art_h1 tl_h1">{d.title.includes(':') ? (<Fragment><span set:html={nobr(d.title.slice(0, d.title.indexOf(':') + 1))} /> <span class="v-soft" set:html={nobr(d.title.slice(d.title.indexOf(':') + 1).trim())} /></Fragment>) : <span set:html={nobr(d.title)} />}</h1>
             {d.lede && <p class="art_lede">{d.lede}</p>}
           </div>
           <dl class="cs_facts" data-tl="facts">
@@ -88,10 +93,10 @@ const json = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
               const marks = /^Networks?$/.test(f.label) ? marksFor(f.value) : [];
               return (
                 <div class="cs_fact">
-                  <dt class="cs_dt">{f.label}</dt>
+                  <dt class="cs_dt">{factIcon(f.label) && <Icon name={factIcon(f.label)!} size={15} class="cs_dticon" />}{f.label}</dt>
                   {marks.length > 0 || f.live ? (
                     <dd class="cs_dd-net">
-                      {marks.map((src) => <img alt="" class="cs_netmark" src={src} />)}
+                      {marks.map((net) => <NetMark net={net} class="cs_netmark" />)}
                       {f.live && <span aria-hidden="true" class="cs_dot"></span>}
                       {marks.length > 0 ? <span>{netParts(f.value).map((p) => (p.href ? <a class="cs_netlink" href={p.href}>{p.part}</a> : p.part))}</span> : <span>{f.value}</span>}
                     </dd>
@@ -106,12 +111,12 @@ const json = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
       </div>
       {metrics.length > 0 && (
         <section aria-label="In numbers" class="cs_outcomes" data-tl="metrics">
-          <ul class="cs_metrics" role="list">
+          <ul class={`cs_metrics tl_metrics tl_metrics--${metrics.length}`} role="list">
             {metrics.map((m) => (
               <li class="cs_metric">
                 <span class="cs_fig">
                   <span>{m.figure}</span>
-                  {m.receipt && <a aria-label="Receipt" class="cs_figmark" href={m.receipt}>✓</a>}
+                  {m.receipt && <a aria-label={`Receipt: ${m.label}`} class="cs_figmark" href={m.receipt}>✓</a>}
                 </span>
                 <span class="cs_metriclabel">{m.label}</span>
               </li>
@@ -121,11 +126,8 @@ const json = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
       )}
       {v.kind && (
         <figure class={`tl_visual tl_visual--${v.kind}`} data-tl="visual">
-          {v.kind === 'image' && (
-            <div class={`tl_panel tl_panel--${v.tone}`}>
-              <img alt={v.alt} class="tl_panelimg" height="1830" loading="lazy" src={v.image} width="990" />
-            </div>
-          )}
+          {v.kind === 'image' && <ToolStage alt={v.alt} clip={v.clip} image={v.image} label={v.label} lines={v.lines} tone={v.tone} />}
+          {v.kind === 'terminal' && v.lines.length > 0 && <ToolStage clip={v.clip} label={v.label} lines={v.lines} tone={v.tone} />}
           {v.kind === 'code' && (
             <div class="tl_code">
               <div aria-hidden="true" class="tl_codebar"><i></i><i></i><i></i><span class="tl_codefile">{v.filename}</span></div>
@@ -227,3 +229,17 @@ const json = (o: object) => JSON.stringify(o).replace(/</g, '\\u003c');
   </main>
   <Cta heading={cta} />
 </BaseLayout>
+
+<style>
+  /* Figures in even rows, never three and an orphan */
+  @media (max-width: 991px) {
+    .tl_metrics--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 767px) {
+    .tl_metrics--3 { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (max-width: 479px) {
+    .tl_metrics--4 { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (min-width: 992px) and (max-width: 1199px) { .art_h1 { font-size: 48px; } }
+</style>

@@ -77,7 +77,9 @@ tech:
 - SEP-49
 receipts: ''
 relatedService: Tokenized funds and deposits
-team: []
+team:
+- enzo-soyer
+- hugo-heer
 quote:
   label: ''
   text: ''
@@ -85,13 +87,11 @@ quote:
   role: ''
   portrait: ''
   portraitAlt: ''
-  logo: ''
-  logoAlt: ''
 ndaSummary: A Luxembourg real estate fund issuing its interests natively on Stellar. In design.
 client: European real estate fund sponsor
 nda: true
 workTitle: Issuing a real estate fund natively on Stellar
-workLine: Fund interests onchain as the register of record, compliance locked in the asset. Client under NDA, in design.
+workLine: Fund interests onchain as the register of record, compliance locked in the asset. In design.
 audience: Financial institutions
 network: Stellar
 year: '2026'

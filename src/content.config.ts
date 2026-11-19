@@ -15,18 +15,27 @@ const toText = (v: unknown) => {
   return v;
 };
 const str = z.preprocess(toText, z.string().default(''));
-const quote = z
-  .object({
-    label: str, // small tag above the quote ("Placeholder quote" until approved)
-    text: str,
-    author: str,
+const quote = z.object({
+  label: str, // small tag above the quote ("Placeholder quote" until approved)
+  text: str,
+  author: str,
+  role: str,
+  portrait: str,
+  portraitAlt: str,
+});
+
+// Authors without a team profile: the company, guests and former teammates.
+const authors = defineCollection({
+  loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/authors' }),
+  schema: z.object({
+    draft: z.boolean().default(false),
+    name: z.string(),
+    type: z.enum(['Person', 'Organization']).default('Person'),
     role: str,
     portrait: str,
-    portraitAlt: str,
-    logo: str,
-    logoAlt: str,
-  })
-  .default({});
+    link: str.refine((v) => !v || /^\/(?!\/)/.test(v) || /^https?:\/\/[^/\s]+(?:[/?#]\S*)?$/.test(v), 'Author link must be empty, a site path starting with /, or an http(s) URL.'),
+  }),
+});
 
 const caseStudies = defineCollection({
   loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/case-studies' }),
@@ -36,16 +45,17 @@ const caseStudies = defineCollection({
     metaTitle: str, // <title> for search engines (60 characters max); defaults to "<title> | Case study | The Aha Company"
     shortTitle: str, // used in "More work" and team engagement rows
     alliance: z.boolean().default(false), // an alliance, not a client engagement: listed last, without a link to a case page
-    order: z.number().default(100), // Work page order
+    order: z.number().default(100), // Work page order, after the ids listed in src/data/curation.ts (workOrder)
     eyebrow: str, // "Financial institution · Stellar"
     lede: str, // also the paragraph in Selected work on the home page
     description: str, // search description (160 characters max); defaults to the lede
-    ndaSummary: str, // one-liner in the "Client under NDA" block on home
+    ndaSummary: str, // one-liner in the "More work for financial institutions" block on home (clients not named)
     cta: str, // heading of the closing call-to-action band
     client: str,
-    nda: z.boolean().default(false), // shows the "Under NDA" pill on the Work page
-    workTitle: str, // Work page row title
-    workLine: str, // Work page row line
+    logo: str, // client branding in team engagement rows
+    nda: z.boolean().default(false), // client not named: the "Client not named" pill on the Work page and the case page
+    workTitle: str, // title of its tile (home page and Work page)
+    workLine: str, // line of its tile (home page and Work page)
     // Work page filter. "Institutions" (the former label) is still accepted.
     audience: z.preprocess((v) => (v === 'Institutions' ? 'Financial institutions' : v), z.enum(['Financial institutions', 'Protocols and products', 'Ecosystems and open source', '']).default('')),
     network: str, // Stellar, XRPL, Canton, Multi-network
@@ -58,7 +68,7 @@ const caseStudies = defineCollection({
     receipts: str, // Markdown list of links
     relatedService: str,
     team: z.array(z.string()).default([]), // team member slugs
-    quote,
+    quote: quote.default({}),
   }),
 });
 
@@ -72,7 +82,7 @@ const blog = defineCollection({
     category: str, // eyebrow
     lede: str,
     description: str, // search description (160 characters max); defaults to the lede
-    author: str, // team member slug (for the team page "Writing" list)
+    author: str, // slug from team or authors (team members also list the post under "Writing")
     authorName: str,
     authorRole: str,
     authorBio: str,
@@ -87,7 +97,7 @@ const blog = defineCollection({
   }),
 });
 
-const row2 = z.object({ title: z.string(), description: str });
+const row2 = z.object({ title: z.string(), description: str, icon: str }); // icon: a file name of src/icons, drawn on the item's card
 const networks = defineCollection({
   loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/networks' }),
   schema: z.object({
@@ -97,19 +107,20 @@ const networks = defineCollection({
     mark: str,
     markAlt: str,
     heading: str, // a network without a heading has no page of its own (redirects to /networks)
+    headingSoft: str, // optional second half of the heading, in the softer tone
     metaTitle: str, // <title> for search engines (60 characters max); defaults to "Integrate with <name> | The Aha Company"
     lede: str,
     description: str, // search description (160 characters max); defaults to the lede
     secondaryCta: z.object({ label: str, href: str }).default({}),
     stats: z.array(z.object({ value: z.string(), label: str })).default([]),
     ship: z
-      .object({ title: str, meta: str, rows: z.array(z.object({ name: z.string(), description: str, badge: str, href: str })).default([]) })
+      .object({ title: str, meta: str, rows: z.array(z.object({ name: z.string(), description: str, badge: str, href: str, live: z.boolean().default(false) })).default([]) }) // live: the badge says it runs on mainnet (green dot); other badges are a neutral chip
       .default({}),
     involves: z.array(row2).default([]),
     stepsLede: str,
     steps: z.array(z.object({ title: z.string(), description: str, output: str })).default([]),
     proof: z
-      .object({ eyebrow: str, heading: str, body: str, caseStudy: str, linkLabel: str, quote })
+      .object({ eyebrow: str, heading: str, body: str, caseStudy: str, linkLabel: str, quote: quote.extend({ logo: str, logoAlt: str }).default({}) })
       .default({}),
     funding: z
       .object({ heading: str, body: str, rows: z.array(z.object({ name: z.string(), description: str, badge: str })).default([]) })
@@ -158,7 +169,8 @@ const tools = defineCollection({
     metrics: z.array(z.object({ figure: str, label: str, receipt: str })).default([]),
     visual: z
       .object({
-        kind: z.enum(['image', 'code', 'bars', '']).default(''),
+        // terminal: a recorded session alone; an image can also carry one (lines)
+        kind: z.enum(['image', 'code', 'bars', 'terminal', '']).default(''),
         image: str,
         alt: str,
         tone: z.enum(['dark', 'light']).default('dark'), // panel behind an image
@@ -166,6 +178,13 @@ const tools = defineCollection({
         code: str,
         title: str, // bars
         bars: z.array(z.object({ label: z.string(), sub: str, value: z.number(), display: str, highlight: z.boolean().default(false) })).default([]),
+        // terminal, or an image with a session beside it: the session exactly as
+        // printed ("$ " starts a command, "…" marks skipped lines and
+        // commands), and what it shows, for screen readers
+        lines: z.array(str).default([]),
+        // keep one line per printed line, cut by the window (for --help columns)
+        clip: z.boolean().default(false),
+        label: str,
         caption: str,
       })
       .default({}),
@@ -186,4 +205,4 @@ const tools = defineCollection({
   }),
 });
 
-export const collections = { caseStudies, blog, networks, team, tools };
+export const collections = { caseStudies, blog, networks, team, authors, tools };

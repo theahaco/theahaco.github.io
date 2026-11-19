@@ -1,0 +1,302 @@
+// The visual of each case study page (/case-studies/<id>), drawn with the
+// vx/ kit (src/components/vx) by src/components/cases/CaseVisual.astro and shown
+// in the page header, beside the title. Some pages have a second one in their
+// body, after one section: `bodyVisuals`, at the end of this file.
+//
+// Truth rule: every title, sub-line and float below restates something written
+// in the case file, src/content/case-studies/<id>.md. The comment above each
+// step gives the line numbers it comes from, so the content team can check it.
+// If you edit a case file, check its visual here too (line numbers move when
+// lines are added above them).
+// - No sample amounts, no figure the case file does not state, no new dates.
+// - Anonymous (NDA) cases: generic steps, no logo, no client name, nothing
+//   about the client that the case file does not already say.
+// - PwC US is a co-selling alliance, not an engagement: it has no visual (its
+//   page keeps its header image).
+// Keep check titles short (about 32 characters) so they hold on one line on a
+// laptop; a sub-line takes the detail. Steps read top to bottom in the order
+// things happened. Status: a live system ends on a "Live" pill; a system not
+// live yet says where it stands in a float ("In build", "In design"), never
+// with the pill, whose green dot means live, and sets `planned: true`, which
+// draws its checks hollow (they describe the design, not a running system).
+//
+// Panel tint by audience, as on the home page rows: financial institutions
+// blue, protocols green, ecosystems pink.
+
+export type Tone = 'blue' | 'green' | 'pink' | 'tan';
+export type Panel = 'paper' | 'blue' | 'pink' | 'tan' | 'green';
+
+/** Same shape as FlowStep in src/components/vx/Flow.astro. */
+export interface CaseStep {
+  kind: 'anchor' | 'check';
+  title: string;
+  sub?: string;
+  icon?: string;
+  logo?: { src: string; w: number; h: number };
+  net?: 'stellar' | 'xrpl' | 'canton' | 'ethereum';
+  tone?: Tone;
+  status?: string;
+}
+
+export type CaseVisual =
+  | {
+      kind: 'flow';
+      /** What the flow shows, for screen readers. */
+      label: string;
+      panel: Panel;
+      steps: CaseStep[];
+      floats?: { text: string; icon?: string; at: 'top' | 'bottom' }[];
+      /** Not live yet (in design or in build): hollow checks. */
+      planned?: boolean;
+      /** Shown under the panel; when empty, the case file's hero caption is used. */
+      caption?: string;
+    }
+  | {
+      kind: 'phones';
+      panel: Panel;
+      /** Tool phones (public/images/tools/<name>-phone-*.webp); the center one is in front. */
+      left: string;
+      center: string;
+      right: string;
+      caption: string;
+    };
+
+const LOGOS = '/images/logos';
+
+export const caseVisuals: Record<string, CaseVisual> = {
+  // stellar-development-foundation.md: three of the tools named in the case,
+  // shown by real captures of their own sites (public/images/tools/README.md).
+  'stellar-development-foundation': {
+    kind: 'phones',
+    panel: 'pink',
+    // Nido: line 66. Stellar Scaffold: line 64 (in front: 111 of the 137
+    // projects counted on November 2, 2026 build on it, line 71). Stellar
+    // Registry: line 65.
+    left: 'nido',
+    center: 'scaffold-stellar',
+    right: 'stellar-registry',
+    // Names: lines 6 and 64-66 ("tooling the Stellar ecosystem runs on")
+    caption: 'Nido, Stellar Scaffold and Stellar Registry, on their own sites: three of the tools we build and maintain.',
+  },
+
+  // lifi.md
+  lifi: {
+    kind: 'flow',
+    label: 'LI.FI on Stellar: the Soroban contract layer we designed, built and delivered into production',
+    panel: 'green',
+    steps: [
+      // line 6: "LI.FI's routing was built for EVM chains"
+      { kind: 'anchor', logo: { src: `${LOGOS}/logo-light-lifi.svg`, w: 44, h: 16 }, tone: 'green', title: 'LI.FI', sub: 'Routing built for EVM chains' },
+      // line 58; metric lines 42-44 ("Native: Soroban contracts, not ported from EVM")
+      { kind: 'check', title: 'Soroban contracts for Stellar', sub: 'Written for it, not ported from EVM' },
+      // line 59: "Routes executed under the user's signed authorization or a token allowance"
+      { kind: 'check', title: 'Routes authorized by the user', sub: 'Signed, or through a token allowance' },
+      // line 60: "Tokens, native XLM included, addressed through their Stellar Asset Contracts"
+      { kind: 'check', title: 'Stellar Asset Contracts', sub: 'For tokens, native XLM included' },
+      // lines 33-34 (metric: "Audited, by Halborn, before production"), 52 and 61
+      { kind: 'check', title: 'Audited by Halborn', sub: 'Before production' },
+      // title: line 64 ("LI.FI is live on Stellar"); sub: line 52 ("delivered it into
+      // production"); status: lines 18-21 (Status: Live)
+      { kind: 'anchor', net: 'stellar', title: 'LI.FI on Stellar', sub: 'Delivered into production', status: 'Live' },
+    ],
+  },
+
+  // ripple.md
+  ripple: {
+    kind: 'flow',
+    label: 'Ripple’s accelerator cohorts and hackathons: how our architects take teams from prototype to go live',
+    panel: 'pink',
+    steps: [
+      // line 6 ("Ripple's accelerator cohorts and hackathons"), line 44 ("Teams
+      // arrive with a prototype and a deadline")
+      { kind: 'anchor', logo: { src: `${LOGOS}/logo-light-ripple.svg`, w: 44, h: 11 }, tone: 'pink', title: 'Teams in Ripple’s programs', sub: 'A prototype and a deadline' },
+      // line 51: "Architecture reviews of each team's design, against the ledger's built-in functions"
+      { kind: 'check', title: 'Architecture reviews', sub: 'Against the ledger’s built-in functions' },
+      // line 52: "Token and issuer design: trust line tokens or MPTs, ..."
+      { kind: 'check', title: 'Token and issuer design', sub: 'Trust line tokens or MPTs' },
+      // line 54: "Hands-on help on the last steps before go live"
+      { kind: 'check', title: 'Hands-on help', sub: 'On the last steps before go live' },
+      // lines 35-36 (metric) and 58: "In one 2026 cohort, two of the teams we
+      // mentored went live on mainnet or were ready to go live"
+      { kind: 'anchor', net: 'xrpl', title: 'Go live on XRPL mainnet', sub: 'One 2026 cohort: two teams live or ready' },
+    ],
+  },
+
+  // talwex.md (in build: hollow checks and an "In build" float, no pill)
+  talwex: {
+    kind: 'flow',
+    label: 'Talwex on Stellar: the institutional bond yield pool whose Soroban smart contracts we develop, in build',
+    panel: 'green',
+    steps: [
+      // line 6 and Talwex's own site ("One infrastructure for bonds")
+      { kind: 'anchor', logo: { src: `${LOGOS}/logo-talwex-mark.svg`, w: 27, h: 18 }, tone: 'green', title: 'Talwex', sub: 'One infrastructure for bonds' },
+      // lines 6 and 44
+      { kind: 'check', title: 'Institutional bond yield pool', sub: 'On Stellar' },
+      // line 47 (and lines 35-37, metric)
+      { kind: 'check', title: 'Soroban smart contracts', sub: 'Developed by us, in Rust' },
+      // lines 32-34 (metric, receipt: the Stellar Community Fund page) and 50
+      { kind: 'check', title: 'Stellar Community Fund', sub: 'Awarded, round 43 (Build)' },
+      // lines 18-19 (Status: In build) and 50
+      { kind: 'anchor', net: 'stellar', title: 'Talwex on Stellar', sub: 'Smart contracts in build' },
+    ],
+    planned: true,
+    floats: [{ text: 'In build', icon: 'calendar-blank', at: 'top' }],
+  },
+
+  // starknet.md (a DevX audit: no live system, so no status pill)
+  starknet: {
+    kind: 'flow',
+    label: 'Our DevX audit of Starknet: two engineers, one week, three documents, then Starknet restructured its quickstart',
+    panel: 'pink',
+    steps: [
+      // lines 6 and 44 ("even experienced engineers needed several working days")
+      { kind: 'anchor', logo: { src: `${LOGOS}/logo-starknet-mark.svg`, w: 24, h: 24 }, tone: 'pink', title: 'Starknet onboarding', sub: 'Several working days to functional code' },
+      // line 50
+      { kind: 'check', title: 'Core onboarding journey', sub: 'Analyzed as a whole' },
+      // line 51
+      { kind: 'check', title: 'Starknet command line', sub: 'Small and large suggestions' },
+      // line 52
+      { kind: 'check', title: 'Loam on Starknet', sub: 'At the team’s request' },
+      // line 57 and lines 38-40 (metric, receipt: pull request #1480)
+      { kind: 'anchor', icon: 'file-text', tone: 'green', title: 'Quickstart restructured', sub: 'Shortly after our feedback' },
+    ],
+    // line 6 and lines 21-22 (Engagement: two engineers, one week)
+    floats: [{ text: 'Two engineers · one week', icon: 'users-three', at: 'top' }],
+  },
+
+  // societe-generale-forge.md
+  'societe-generale-forge': {
+    kind: 'flow',
+    label: 'EURCV on Stellar: compliance controls agreed with the SG-FORGE compliance team, compliance flags built into the asset, no contract in the transfer path, live on mainnet since Q1 2026',
+    panel: 'blue',
+    steps: [
+      // line 6 ("EURCV, Société Générale-FORGE's MiCA-compliant euro
+      // stablecoin") and line 33 ("Regulated stablecoin"); the short name
+      // SG-FORGE: lines 48 and 60
+      { kind: 'anchor', logo: { src: `${LOGOS}/logo-light-sgforge.svg`, w: 44, h: 13 }, tone: 'tan', title: 'EURCV', sub: 'Regulated euro stablecoin of SG-FORGE' },
+      // lines 48 and 56: "The controls were agreed with the compliance team
+      // before launch"
+      { kind: 'check', title: 'Compliance controls agreed', sub: 'With the SG-FORGE compliance team' },
+      // lines 38-39 (metric: "Built-in, compliance flags, freeze and
+      // clawback"), 48 and 54
+      { kind: 'check', title: 'Built-in compliance flags', sub: 'Freeze and clawback' },
+      // lines 50 and 55: "a flagged address is frozen, with no contract in the
+      // transfer path"
+      { kind: 'check', title: 'No contract in the transfer path', sub: 'A flagged address is frozen' },
+      // title: line 6 and lines 35-36 (metric: "On Stellar mainnet since Q1 2026");
+      // sub: lines 56 and 60 (operated by the SG-FORGE compliance team);
+      // status: lines 18-19
+      { kind: 'anchor', net: 'stellar', title: 'Mainnet since Q1 2026', sub: 'Run by the SG-FORGE compliance team', status: 'Live' },
+    ],
+    // Caption: the case file's hero caption (line 30).
+  },
+
+  // nda-settlement-stablecoin.md (anonymous: no logo, no name)
+  'nda-settlement-stablecoin': {
+    kind: 'flow',
+    label: 'The settlement stablecoin: minting and redemption from the bank’s systems, with the bank’s own controls and custody',
+    panel: 'blue',
+    steps: [
+      // lines 45 and 52: "Minting and redemption tied to the bank's systems"
+      { kind: 'anchor', icon: 'bank', tone: 'tan', title: 'The bank’s systems', sub: 'Minting and redemption' },
+      // line 55: "Controls designed to the bank's compliance and custody requirements"
+      { kind: 'check', title: 'Compliance and custody controls', sub: 'Designed to the bank’s requirements' },
+      // line 53: "Freeze and clawback held by the bank"
+      { kind: 'check', title: 'Freeze and clawback', sub: 'Held by the bank' },
+      // line 54: "Keys in the bank's own custody setup"
+      { kind: 'check', title: 'Keys in the bank’s own custody' },
+      // title: lines 2 and 45; sub: line 58 ("issued and operated by the bank");
+      // status: lines 18-21 (Status: Live)
+      { kind: 'anchor', net: 'stellar', title: 'Settlement stablecoin', sub: 'Issued and operated by the bank', status: 'Live' },
+    ],
+  },
+
+  // nda-money-market-fund.md (anonymous: no logo, no name)
+  'nda-money-market-fund': {
+    kind: 'flow',
+    label: 'The tokenized share class, by design: subscriptions and redemptions netted at the published NAV, delivery versus payment in one step',
+    panel: 'blue',
+    steps: [
+      // lines 39-40 (metric: "Onchain: subscriptions and redemptions, by design")
+      { kind: 'anchor', icon: 'arrows-left-right', tone: 'tan', title: 'Subscriptions and redemptions', sub: 'Onchain, by design' },
+      // line 59: "One contract nets subscriptions against redemptions at the published NAV"
+      { kind: 'check', title: 'Netted at the published NAV', sub: 'In one contract' },
+      // line 59: "so only the net goes to the depositary"
+      { kind: 'check', title: 'Only the net goes to the depositary' },
+      // line 61: "Cash leg designed for a regulated euro stablecoin on the same
+      // ledger, with delivery versus payment in one step"
+      { kind: 'check', title: 'Delivery versus payment in one step', sub: 'Cash leg in a regulated euro stablecoin' },
+      // line 58 and lines 36-37 (metric: "1:1, tokens in circulation to units
+      // on the fund register")
+      { kind: 'anchor', net: 'stellar', title: 'Fund units on Stellar', sub: '1:1 with units on the fund register, by design' },
+    ],
+    planned: true,
+    // line 6, lines 19-20 (Status: In build) and 42-43 (metric: 2027, launch targeted)
+    floats: [{ text: 'In build · launch targeted for 2027', icon: 'calendar-blank', at: 'top' }],
+    // Caption: the case file's hero caption (line 31).
+  },
+
+  // nda-real-estate-debt-fund.md (anonymous: no logo, no name)
+  'nda-real-estate-debt-fund': {
+    kind: 'flow',
+    label: 'The real estate fund’s interests, by design: from an eligible investor authorized by the account keeper to the onchain register of record',
+    panel: 'blue',
+    steps: [
+      // line 49 ("open only to eligible investors"), line 61 ("no wallet holds the
+      // interest before the account keeper authorizes it")
+      { kind: 'anchor', icon: 'identification-badge', tone: 'tan', title: 'Eligible investor', sub: 'Authorized by the account keeper' },
+      // line 62: "An allowlist registry with hashed investor references and no
+      // personal data onchain"
+      { kind: 'check', title: 'On the allowlist', sub: 'No personal data onchain' },
+      // line 55 ("compliance flags are set once and locked for the life of the
+      // fund"), line 61 ("the rule set cannot be weakened later")
+      { kind: 'check', title: 'Compliance flags locked', sub: 'For the life of the fund' },
+      // line 64: "Subscriptions settled delivery-versus-payment in EURC or EURCV,
+      // or by bank wire and then issuance"
+      { kind: 'check', title: 'Subscriptions in EURC or EURCV', sub: 'Delivery versus payment, or bank wire' },
+      // line 6 and lines 39-40 (metric: "the onchain register is the fund's
+      // register of record")
+      { kind: 'anchor', net: 'stellar', title: 'Fund interests on Stellar', sub: 'The register of record, by design' },
+    ],
+    planned: true,
+    // lines 19-20 (Status: In design) and 67 ("One security audit of the full
+    // suite before mainnet")
+    floats: [{ text: 'In design · one audit before mainnet', icon: 'calendar-blank', at: 'top' }],
+  },
+};
+
+/**
+ * A second visual, in the body of a case page, right after one of its
+ * sections (`after`: that section's id). It is a visual the site already
+ * draws from the same case file, shown as is:
+ * - `eurcv`: the /services institutions visual,
+ *   src/components/services/EurcvControls.astro (without its caption);
+ * - `work`: the visual of the case's home page tile, `workVisuals[work]` in
+ *   src/lib/workVisuals.ts, drawn by src/components/home/WorkVisual.astro.
+ * Same truth rule as above: the comment of each entry gives the lines of the
+ * case file that every word restates. Rendered by
+ * src/pages/case-studies/[slug].astro; alliances never get one.
+ */
+export type BodyVisual =
+  | { kind: 'eurcv'; after: string }
+  | { kind: 'work'; work: string; after: string };
+
+export const bodyVisuals: Record<string, BodyVisual> = {
+  // societe-generale-forge.md, after the Solution (lines 45-50), which the
+  // visual draws: the asset (line 33, "regulated stablecoin"; lines 6, 48 and
+  // 54, "native Stellar asset"; lines 18-19, "Live since Q1 2026"); on the
+  // asset, Stellar's built-in compliance flags, authorization revocable to
+  // freeze an address and clawback (lines 38-39, 48 and 54), for a
+  // MiCA-compliant euro stablecoin (line 6); in operation, the SG-FORGE
+  // compliance team, a flagged address frozen, no contract in the transfer
+  // path, the controls agreed before launch (lines 48, 50, 55, 56 and 60);
+  // every privileged action visible on the public ledger (line 57).
+  'societe-generale-forge': { kind: 'eurcv', after: 'solution' },
+
+  // lifi.md, after the Outcome (lines 62-64), which the routes card draws:
+  // its four routes restate line 64 (Soroswap, Circle's CCTP, NEAR Intents,
+  // ten EVM chains), "As in LI.FI's documentation" its "According to LI.FI's
+  // documentation", and the Live pill lines 18-21 (Status: Live). Sources
+  // also in src/lib/workVisuals.ts.
+  lifi: { kind: 'work', work: 'lifi', after: 'outcome' },
+};

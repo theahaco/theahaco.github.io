@@ -1,0 +1,100 @@
+---
+// /services: a door's precedents, one row per case study (or the tools
+// page); team pages: a person's engagements and tools, in the same rows. A
+// public client shows its logo; a client under NDA shows the lock and its
+// anonymous name, never a logo. Each line and status is a fact of the case
+// study's file in src/content/case-studies (or of the tool's file). The Work
+// page lists its open-source tools and the PwC US alliance with the same rows,
+// under its own labels; a row without href has no link and no arrow (the
+// alliance).
+import Icon from '../Icon.astro';
+import { nobr } from '../../lib/content';
+
+export interface PrecedentRow {
+  href?: string;
+  name: string;
+  line: string;
+  /** Network, status, year or audit, as the case study states them. */
+  meta: string;
+  /** Green live dot before the meta. */
+  live?: boolean;
+  logo?: { src: string; w: number; h: number };
+  /** A figure its case study states, shown at the end of the row. */
+  figure?: { value: string; label: string };
+  /** NDA client (the lock) or our tools (an icon), when there is no logo. */
+  icon?: string;
+  /** This row's tint, when it is not the list's (team pages: each case study's audience). */
+  tint?: 'blue' | 'green' | 'pink';
+  rv?: string;
+}
+interface Props {
+  rows: PrecedentRow[];
+  tint?: 'blue' | 'green' | 'pink';
+  /** The small label over the rows; empty for none (team pages have their own heading). */
+  label?: string;
+}
+const { rows, tint = 'blue', label = 'Precedents' } = Astro.props;
+---
+<div class="pc">
+  {label && <p class="pc_label">{label}</p>}
+  <ul class="pc_list" role="list">
+    {rows.map((r) => {
+      const Row = r.href ? 'a' : 'div';
+      return (
+      <li class="pc_item">
+        <Row class:list={['pc_row', r.figure && 'pc_row--fig', !r.href && 'pc_row--static']} data-rv={r.rv} href={r.href}>
+          <span class:list={['pc_tile', `pc_tile--${r.icon === 'lock-simple' ? 'nda' : r.tint ?? tint}`]}>
+            {r.logo ? <img alt="" height={r.logo.h} loading="lazy" src={r.logo.src} width={r.logo.w} /> : <Icon name={r.icon ?? 'cube'} size={22} />}
+          </span>
+          <span class="pc_text">
+            <span class="pc_name"><Fragment set:html={nobr(r.name)} />{r.href && <span aria-hidden="true" class="pc_arrow">&nbsp;→</span>}</span>
+            <span class="pc_line" set:html={nobr(r.line)} />
+            <span class="pc_meta">{r.live && <span aria-hidden="true" class="v-live pc_live"></span>}{r.meta}</span>
+          </span>
+          {r.figure && <span class="pc_fig"><span class="pc_figv">{r.figure.value}</span><span class="pc_figl">{r.figure.label}</span></span>}
+        </Row>
+      </li>
+      );
+    })}
+  </ul>
+</div>
+
+<style>
+  .pc { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+  .pc_label { margin: 0 0 8px; color: var(--muted); font-size: 12px; font-weight: 600; line-height: 1; letter-spacing: .08em; text-transform: uppercase; }
+  .pc_list { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); }
+  .pc_item { border-bottom: 1px solid var(--line); }
+  .pc_row { display: grid; grid-template-columns: 72px minmax(0, 1fr); column-gap: 16px; align-items: center; padding: 16px 0; color: inherit; text-decoration: none; }
+  .pc_row:focus-visible { outline: 2px solid var(--green-ink); outline-offset: 2px; border-radius: 8px; }
+  .pc_row--fig { grid-template-columns: 72px minmax(0, 1fr) auto; }
+  .pc_fig { display: flex; flex-direction: column; align-items: flex-end; gap: 5px; padding-left: 8px; color: var(--deep-blue); }
+  .pc_figv { font-size: 24px; font-weight: 500; line-height: 1; letter-spacing: -.02em; white-space: nowrap; }
+  .pc_figl { color: var(--muted); font-size: 13px; line-height: 1; white-space: nowrap; }
+
+  .pc_tile { display: grid; place-items: center; width: 72px; height: 52px; border-radius: 12px; background: var(--tint-blue); color: var(--deep-blue); --icon-tint: var(--vibrant-green); --icon-tint-opacity: .55; }
+  .pc_tile--green { background: var(--tint-green); }
+  .pc_tile--pink { background: var(--tint-pink); }
+  .pc_tile--nda { background: var(--tint-tan); color: var(--ink-2); --icon-tint: var(--ink-2); --icon-tint-opacity: .2; }
+  .pc_tile img { display: block; max-width: 56px; height: auto; }
+
+  .pc_text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .pc_name { color: var(--deep-blue); font-size: 16px; font-weight: 600; line-height: 1.3; transition: color .2s; }
+  .pc_arrow { position: relative; left: 0; color: var(--muted); font-weight: 500; transition: left .2s, color .2s; }
+  .pc_line { color: var(--ink-2); font-size: 15px; line-height: 1.45; }
+  .pc_meta { display: block; margin-top: 3px; color: var(--muted); font-size: 13px; font-weight: 500; line-height: 1.4; }
+  .pc_live { width: 7px; height: 7px; margin: 0 8px 1px 0; vertical-align: middle; }
+  .pc_row:hover .pc_name { color: var(--green-ink); }
+  .pc_row:hover .pc_arrow { left: 3px; color: var(--green-ink); }
+  .pc_row--static { cursor: default; }
+  .pc_row--static:hover .pc_name { color: var(--deep-blue); }
+  @media (prefers-reduced-motion: reduce) { .pc_name, .pc_arrow { transition: none; } .pc_row:hover .pc_arrow { left: 0; } }
+
+  @media (max-width: 479px) {
+    .pc_row, .pc_row--fig { grid-template-columns: 56px minmax(0, 1fr); column-gap: 14px; align-items: start; padding: 14px 0; }
+    .pc_fig { grid-column: 2; flex-direction: row; align-items: baseline; gap: 6px; margin-top: 8px; padding-left: 0; }
+    .pc_figv { font-size: 20px; }
+    .pc_tile { width: 56px; height: 44px; border-radius: 10px; }
+    .pc_tile img { max-width: 44px; }
+    .pc_tile :global(svg) { width: 20px; height: 20px; }
+  }
+</style>

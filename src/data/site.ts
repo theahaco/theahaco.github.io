@@ -38,6 +38,24 @@ export const contact = {
   formEndpoint: '',
 };
 
+// Projects using our open-source tools, and the date they were counted
+// (/open-source#how-we-count). Shown on the home page (the open-source band,
+// without the date) and the Open source page.
+export const toolAdoption = { count: 137, date: 'November 2, 2026' };
+
+// Home key figures, as the CEO approved them in November 2026: the totals of
+// the hero's "Live on mainnet" card (the project count, toolAdoption above,
+// is in the open-source band).
+// - deployments: smart contract deployments on mainnet, stated by the CEO
+//   (add the source and a date here when there is one).
+// - audits: third-party security audits of our code and our clients'
+//   contracts: Hacken (a client's contracts on Soroban), Halborn (LI.FI on Stellar),
+//   Veridise (Stellar Registry), Runtime Verification (Moonlight core
+//   contracts) and two by Arda.
+// - founded: the year The Aha Company was founded (About); not shown on the
+//   home page for now (taken out of the key figures in November 2026).
+export const keyFigures = { deployments: '20+', audits: 6, founded: 2021 };
+
 export const calendly = {
   url: 'https://calendly.com/d/cs4b-dy3-9py/introduction-to-the-aha-company?background_color=fbfaf8&text_color=14243a&primary_color=1a3b60',
 };
@@ -63,7 +81,7 @@ export const analytics: { provider: '' | 'umami' | 'plausible' | 'cloudflare' | 
 
 export const footer = {
   description: 'Blockchain integration partner for financial institutions, protocols and ecosystems.',
-  locations: 'United States · Europe · Brazil',
+  locations: 'United States · France · Brazil',
   // The site is operated by the US company only (see /terms and /privacy).
   legal: ['Dawning Inc. (dba The Aha Company), a Delaware corporation'],
   copyright: '© 2026 Dawning Inc. (dba The Aha Company). All rights reserved.',

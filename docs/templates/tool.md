@@ -6,12 +6,12 @@
 
 name: Acme SDK
 title: 'Acme SDK: a typed client for Soroban contracts'
-# Page heading: "<name>: <what it is>". The Work page shows the part after the colon.
+# Page heading: "<name>: <what it is>".
 metaTitle: 'Acme SDK: typed Soroban clients | The Aha Company'
 # Optional <title> for Google, 60 characters or fewer.
 description: 'What Google shows: 120 to 160 characters, with the words people search for.'
 lede: 'Two or three sentences: what it does, who it is for, where it stands.'
-summary: 'One line for the /open-source card and the home page.'
+summary: 'One line for the /open-source card and the Work page.'
 category: Developer tooling
 # Developer tooling, Wallet, Smart accounts, Privacy, Governance...
 network: Stellar
@@ -43,10 +43,13 @@ metrics:
 
 visual:
   kind: ''
-  # '' (none), image, code or bars.
+  # '' (none), image, code, bars or terminal.
   # image: image: /images/tools/acme-sdk.webp, alt: '...', tone: dark or light
+  #   (a phone capture of the tool's site: see public/images/tools/README.md)
   # code: filename: example.ts, code: |- (the code, indented)
   # bars: title: '...', bars: - label, sub, value (number), display, highlight
+  # terminal: label: '...', lines: - '$ a command' then each printed line,
+  #   copied from a real run (cut whole lines only, marked '…')
   caption: ''
 
 sections:
