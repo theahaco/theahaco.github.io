@@ -96,7 +96,7 @@ for (const dir of DIRS) {
       // Work page filter (the audience): any other value hides the item from the
       // filtered list. The network is shown in the eyebrows.
       const AUDS = ['Financial institutions', 'Protocols and products', 'Ecosystems and open source', ...(dir === 'case-studies' ? ['Institutions'] : [])];
-      const NETS = ['Stellar', 'XRPL', 'Canton', 'Ethereum', 'Multi-network'];
+      const NETS = ['Stellar', 'XRPL', 'Canton', 'Cardano', 'Ethereum', 'Multi-network'];
       if (data.audience && !AUDS.includes(data.audience)) add(file, lineOf('audience'), `"${data.audience}" is not a Work page filter. Write one of: Financial institutions, Protocols and products, Ecosystems and open source.`);
       if (data.network && !NETS.includes(data.network)) add(file, lineOf('network'), `"${data.network}" is not a network the site lists. Write one of: ${NETS.join(', ')}.`);
     }
