@@ -96,7 +96,7 @@ const allServices: Service[] = [
       // study). The alt text says what the link opens.
       { kind: 'client', logo: `${LOGOS}/logo-light-stellar.svg`, alt: 'Stellar DevX audit', w: 61, h: 15, href: '/case-studies/stellar-development-foundation#devx-audit' },
       { kind: 'client', logo: `${LOGOS}/logo-light-starknet.svg`, alt: 'Starknet DevX audit', w: 69, h: 16, href: '/case-studies/starknet' },
-      { kind: 'client', logo: `${LOGOS}/logo-light-ripple.svg`, alt: 'Ripple', w: 54, h: 14, href: '/case-studies/ripple' },
+      { kind: 'client', logo: `${LOGOS}/logo-light-ripple.svg`, alt: 'Ripple', w: 55, h: 14, href: '/case-studies/ripple' },
       { kind: 'tool', icon: 'terminal-window', text: 'Stellar CLI plugins and bindings', href: '/open-source/stellar-cli' },
       { kind: 'tool', icon: 'stack', text: 'Stellar Scaffold', href: '/open-source/stellar-scaffold' },
     ],
