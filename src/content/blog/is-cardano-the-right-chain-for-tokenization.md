@@ -2,9 +2,9 @@
 title: Is Cardano the right chain for tokenization?
 category: Institutions
 lede: 'For tokenized Swiss shares, Cardano became a real option in October 2026: a programmable token standard with transfer rules went live, and Switzerland''s Capital Markets and Technology Association recognized a profile of it as equivalent to its own token for shares. For a stablecoin or a fund that needs freeze, seizure and broad custody on day one, the pieces are still arriving.'
-author: the-aha-company
-authorBio: An integration partner for financial institutions bringing assets onchain.
-date: December 15, 2026
+author: enzo-soyer
+authorBio: CEO of The Aha Company, an integration partner for financial institutions bringing assets onchain.
+date: November 23, 2026
 readMinutes: '3'
 cover: /images/covers/is-cardano-the-right-chain-for-tokenization.webp
 coverCaption: ''

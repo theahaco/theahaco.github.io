@@ -2,9 +2,9 @@
 title: Why XRPL is the right chain for tokenization
 category: Institutions
 lede: On the XRP Ledger, issuing a token, approving who may hold it, freezing a balance and clawing it back are functions of the ledger itself. A regulated issuer configures them instead of writing and auditing token code, and banks and asset managers already issue there.
-author: the-aha-company
-authorBio: A Ripple program partner for accelerator mentoring and developer experience on the XRP Ledger.
-date: December 1, 2026
+author: enzo-soyer
+authorBio: CEO of The Aha Company, a Ripple program partner for accelerator mentoring and developer experience on the XRP Ledger.
+date: November 25, 2026
 readMinutes: '3'
 cover: /images/covers/why-xrpl-is-the-right-chain-for-tokenization.webp
 coverCaption: ''

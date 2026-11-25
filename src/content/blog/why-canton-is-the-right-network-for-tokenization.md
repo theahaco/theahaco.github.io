@@ -2,9 +2,9 @@
 title: Why Canton is the right network for tokenization
 category: Institutions
 lede: Two questions matter to a bank considering a shared ledger. Will its positions stay private, and will both legs of a trade settle together? Canton was designed around those two questions, and in October 2026 the DTCC Tokenization Service went live on it, alongside DTCC's private network.
-author: the-aha-company
-authorBio: An integration partner for financial institutions bringing assets onchain.
-date: December 8, 2026
+author: enzo-soyer
+authorBio: CEO of The Aha Company, an integration partner for financial institutions bringing assets onchain.
+date: November 24, 2026
 readMinutes: '3'
 cover: /images/covers/why-canton-is-the-right-network-for-tokenization.webp
 coverCaption: ''
