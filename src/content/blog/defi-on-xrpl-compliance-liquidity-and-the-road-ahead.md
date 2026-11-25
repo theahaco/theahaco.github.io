@@ -10,6 +10,11 @@ cover: /images/covers/defi-on-xrpl-compliance-liquidity-and-the-road-ahead.webp
 coverCaption: ''
 relatedWork: ripple
 relatedWorkLabel: Ripple's accelerator cohorts and hackathons
+# While Ripple is hidden (src/data/curation.ts), this bio replaces the one above
+# and the Related work link is left out.
+ifClientHidden:
+  ripple:
+    authorBio: An integration partner for financial institutions bringing assets onchain.
 audience: Protocols and products
 network: XRPL
 order: 1

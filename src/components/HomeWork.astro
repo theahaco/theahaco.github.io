@@ -5,7 +5,7 @@
 // for financial institutions") and the articles tab. Webflow tabs markup,
 // driven by src/scripts/tabs.js. The block's icons come from src/lib/visuals.ts.
 import { caseStudies, posts, pick, nobr, formatDate } from '../lib/content';
-import { homeFeaturedCases, homeNdaCases, homeArticles } from '../data/curation';
+import { homeFeaturedCases, homeFeaturedBackup, homeNdaCases, homeArticles } from '../data/curation';
 import { caseVisual } from '../lib/visuals';
 import Icon from './Icon.astro';
 import WorkTile from './WorkTile.astro';
@@ -16,6 +16,8 @@ const nda = pick(all, homeNdaCases);
 const allPosts = await posts();
 const articles = homeArticles.length ? pick(allPosts, homeArticles) : allPosts.slice(0, 3);
 const iconbox = (tone: string) => ['v-iconbox', tone !== 'blue' && `v-iconbox--${tone}`];
+// The featured case studies; a hidden client's place goes to the backup (src/data/curation.ts).
+const featured = pick(await caseStudies(), [...homeFeaturedCases, ...homeFeaturedBackup]).slice(0, homeFeaturedCases.length).map((c) => c.id);
 ---
 <div class="work_tabs w-tabs" data-current="Tab 1" data-duration-in="300" data-duration-out="100" data-easing="ease">
   <div aria-label="Work type" class="work_toggle w-tab-menu">
@@ -25,7 +27,7 @@ const iconbox = (tone: string) => ['v-iconbox', tone !== 'blue' && `v-iconbox--$
   <div class="work_panels w-tab-content">
     <div class="w-tab-pane w--tab-active" data-w-tab="Tab 1" id="work-cases">
       <div class="w-dyn-list">
-        <WorkTile ids={homeFeaturedCases} />
+        <WorkTile ids={featured} />
       </div>
       {nda.length > 0 && (
         <div aria-labelledby="hw-more" class="hw_nda" role="group">

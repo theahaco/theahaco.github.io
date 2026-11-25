@@ -24,6 +24,10 @@ const quote = z.object({
   portraitAlt: str,
 });
 
+// Fields replaced while a client is hidden: { <client>: { field: value } }
+// (src/data/curation.ts, hiddenClients; src/lib/hidden.ts).
+const ifClientHidden = z.record(z.string(), z.record(z.string(), z.any())).optional();
+
 // Authors without a team profile: the company, guests and former teammates.
 const authors = defineCollection({
   loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/authors' }),
@@ -76,6 +80,7 @@ const blog = defineCollection({
   loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/blog' }),
   schema: z.object({
     draft: z.boolean().default(false),
+    ifClientHidden: ifClientHidden, // replacements while a client is hidden (src/lib/hidden.ts)
     title: z.string(),
     metaTitle: str, // <title> for search engines (60 characters max); defaults to "<title> | The Aha Company"
     order: z.number().default(100),
@@ -102,6 +107,7 @@ const networks = defineCollection({
   loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/networks' }),
   schema: z.object({
     draft: z.boolean().default(false),
+    ifClientHidden: ifClientHidden, // replacements while a client is hidden (src/lib/hidden.ts)
     name: z.string(),
     order: z.number().default(100),
     mark: str,
@@ -112,7 +118,7 @@ const networks = defineCollection({
     lede: str,
     description: str, // search description (160 characters max); defaults to the lede
     secondaryCta: z.object({ label: str, href: str }).default({}),
-    stats: z.array(z.object({ value: z.string(), label: str })).default([]),
+    stats: z.array(z.object({ value: z.string(), label: str, client: str })).default([]),
     ship: z
       .object({ title: str, meta: str, rows: z.array(z.object({ name: z.string(), description: str, badge: str, href: str, live: z.boolean().default(false) })).default([]) }) // live: the badge says it runs on mainnet (green dot); other badges are a neutral chip
       .default({}),
@@ -136,6 +142,7 @@ const team = defineCollection({
   loader: glob({ pattern: ['*.md', '!README.md'], base: './src/content/team' }),
   schema: z.object({
     draft: z.boolean().default(false),
+    ifClientHidden: ifClientHidden, // replacements while a client is hidden (src/lib/hidden.ts)
     name: z.string(),
     order: z.number().default(100),
     role: str,
@@ -145,6 +152,7 @@ const team = defineCollection({
     since: str,
     portrait: str,
     links: z.object({ linkedin: str, github: str, email: str }).default({}),
+    bio: str, // replaces the text under the front matter; only set through ifClientHidden
   }),
 });
 

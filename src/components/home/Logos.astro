@@ -12,7 +12,7 @@
 // client, or else to the client's own website (`site`). The key figures are in the hero's
 // "Live on mainnet" card (deployments, audits) and in the open-source band
 // (projects).
-import { caseStudies, publicQuote } from '../../lib/content';
+import { caseStudies, publicQuote, linksToHiddenClient } from '../../lib/content';
 import { homeQuotes } from '../../data/curation';
 import { site } from '../../data/site';
 
@@ -32,7 +32,7 @@ const voices = homeQuotes
 
 // h: logo height in px on desktop (per file, for an even optical weight);
 // w: its width at that height (from the file's proportions).
-const logos = [
+const allLogos = [
   { name: 'Stellar Development Foundation', src: '/images/logos/logo-light-stellar.svg', h: 22, w: 90, href: '/case-studies/stellar-development-foundation' },
   { name: 'Société Générale-FORGE', src: '/images/logos/logo-light-sgforge.svg', h: 26, w: 90, href: '/case-studies/societe-generale-forge' },
   { name: 'Ripple', src: '/images/logos/logo-light-ripple.svg', h: 22, w: 85, href: '/case-studies/ripple' },
@@ -41,6 +41,8 @@ const logos = [
   { name: 'LI.FI', src: '/images/logos/logo-light-lifi.svg', h: 23, w: 63, href: '/case-studies/lifi' },
   { name: 'Banque Delubac et Cie', src: '/images/logos/logo-light-delubac.svg', h: 25, w: 111, site: 'https://www.delubac.com/' },
 ];
+// Clients kept off the site for now (src/data/curation.ts, hiddenClients) are left out.
+const logos = allLogos.filter((l) => !linksToHiddenClient(l.href));
 ---
 <section aria-labelledby="vc-label" class="vc">
   <div class="vc_inner">
@@ -76,7 +78,7 @@ const logos = [
         )}
       </div>
     )}
-    <ul aria-labelledby="vc-label" class="vc_row" role="list">
+    <ul aria-labelledby="vc-label" class="vc_row" role="list" style={`--vc-n:${logos.length}`}>
       {logos.map((l) => (
         <li class="vc_cell">
           {l.href || l.site ? (
@@ -139,7 +141,7 @@ const logos = [
   }
 
   /* One framed tile per client, the logos in one tone until hovered */
-  .vc_row { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; width: 100%; margin: 72px 0 0; padding: 0; list-style: none; }
+  .vc_row { display: grid; grid-template-columns: repeat(var(--vc-n, 6), minmax(0, 1fr)); gap: 16px; width: 100%; margin: 72px 0 0; padding: 0; list-style: none; }
   .vc_cell { display: flex; min-width: 0; }
   .vc_tile { position: relative; display: grid; place-items: center; flex: 1; min-width: 0; height: 104px; padding: 0 22px; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); text-decoration: none; transition: border-color .2s, box-shadow .2s, background-color .2s; }
   .vc_logo { display: block; width: auto; max-width: 100%; height: var(--h); filter: grayscale(1); opacity: .82; transition: filter .2s, opacity .2s; }

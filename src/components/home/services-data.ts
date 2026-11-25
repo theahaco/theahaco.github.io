@@ -31,10 +31,12 @@ export interface Service {
   note?: string;
 }
 
+import { linksToHiddenClient } from '../../lib/hidden';
+
 const LOGOS = '/images/logos';
 const NDA_BANK = '/case-studies/nda-settlement-stablecoin';
 
-export const services: Service[] = [
+const allServices: Service[] = [
   {
     id: 'stablecoin-issuance',
     title: 'Stablecoin issuance and governance',
@@ -112,6 +114,8 @@ export const services: Service[] = [
     ],
   },
 ];
+// Precedents of clients kept off the site for now (src/data/curation.ts, hiddenClients) are left out.
+export const services: Service[] = allServices.map((s) => ({ ...s, precedents: s.precedents.filter((p) => !linksToHiddenClient(p.href)) }));
 
 /** Icon-box modifier per audience (visual.css: .v-iconbox, --green, --pink, --tan). */
 export const tint: Record<Audience, string> = { institutions: '', protocols: 'green', ecosystems: 'pink', any: 'tan' };

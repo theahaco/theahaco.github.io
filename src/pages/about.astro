@@ -20,7 +20,7 @@ import TeamGrid from '../components/TeamGrid.astro';
 import Cta from '../components/Cta.astro';
 import Icon from '../components/Icon.astro';
 import { keyFigures, toolAdoption } from '../data/site';
-import { team } from '../lib/content';
+import { team, isHiddenClient } from '../lib/content';
 import { toolIcons } from '../lib/toolIcons';
 
 const figures = [
@@ -76,7 +76,8 @@ const networks: NetworkCell[] = [
     name: 'XRPL',
     href: '/networks/xrpl',
     mark: { src: '/images/logos/logo-xrpl-transparent.webp', w: 313, h: 80, xrpl: true },
-    roles: ['Ripple program partner: accelerator cohorts and hackathons', 'Continuous work on developer experience'],
+    // While Ripple is hidden (src/data/curation.ts), roles that do not name it.
+    roles: isHiddenClient('ripple') ? ['Contributor to the XRPL Rust library', 'Token design with MPTs and issuer controls'] : ['Ripple program partner: accelerator cohorts and hackathons', 'Continuous work on developer experience'],
     tools: [{ id: 'ghostsig', label: 'GhostSig' }],
   },
   {
@@ -168,7 +169,7 @@ const networks: NetworkCell[] = [
         <div class="abr_text">
           <p class="v-eyebrow">Ecosystems</p>
           <h2 class="ab_h2 abr_h2" id="ab-roles">Roles we hold in the ecosystems. <span class="v-soft">Inside the tooling and the programs.</span></h2>
-          <p class="abr_lede">Our engineers wrote parts of the Stellar CLI that developers use every day, and maintain the tools around it. On XRPL, our architects mentor the teams in Ripple’s programs.</p>
+          <p class="abr_lede">Our engineers wrote parts of the Stellar CLI that developers use every day, and maintain the tools around it. {isHiddenClient('ripple') ? 'On XRPL, we build GhostSig, a passkey wallet, and contribute fixes to the XRPL Rust library.' : 'On XRPL, our architects mentor the teams in Ripple’s programs.'}</p>
         </div>
         <a class="abr_all" href="/open-source">See the tools we build and maintain <span aria-hidden="true">→</span></a>
       </div>

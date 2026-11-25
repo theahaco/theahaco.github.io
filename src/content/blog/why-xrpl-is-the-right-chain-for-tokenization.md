@@ -10,6 +10,11 @@ cover: /images/covers/why-xrpl-is-the-right-chain-for-tokenization.webp
 coverCaption: ''
 relatedWork: ripple
 relatedWorkLabel: Ripple's accelerator cohorts and hackathons
+# While Ripple is hidden (src/data/curation.ts), this bio replaces the one above
+# and the Related work link is left out.
+ifClientHidden:
+  ripple:
+    authorBio: CEO of The Aha Company, an integration partner for financial institutions bringing assets onchain.
 audience: Financial institutions
 network: XRPL
 description: 'On the XRP Ledger, issuer controls are ledger settings, and banks and asset managers already issue there. Why XRPL fits tokenization, and what to check first.'

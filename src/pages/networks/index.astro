@@ -10,7 +10,7 @@ import Cta from '../../components/Cta.astro';
 import NetworkCards from '../../components/NetworkCards.astro';
 import NetMark from '../../components/home/NetMark.astro';
 import RouteBuilder from '../../components/networks/RouteBuilder.astro';
-import { networkMarks } from '../../lib/content';
+import { networkMarks, isHiddenClient } from '../../lib/content';
 
 // Header figure: one open question, the networks we build on (the marks of the
 // cards below), drawn as the Flow visuals: dashed branches from a deep blue
@@ -34,7 +34,7 @@ const hub = [
 const talk = { href: '/contact', label: 'Talk to an engineer' };
 const cards = [
   { id: 'stellar', name: 'Stellar', logo: networkMarks.Stellar, href: '/networks/stellar', cta: 'Integrate with Stellar', desc: 'Core contributors, Stellar Community Fund reviewers, tooling maintainers. EURCV and LI.FI live on mainnet.' },
-  { id: 'xrpl', name: 'XRPL', logo: networkMarks.XRPL, href: '/networks/xrpl', cta: 'Integrate with XRPL', desc: 'Ripple program partner: accelerator cohorts, hackathons, continuous work on developer experience.' },
+  { id: 'xrpl', name: 'XRPL', logo: networkMarks.XRPL, href: '/networks/xrpl', cta: 'Integrate with XRPL', desc: isHiddenClient('ripple') ? 'Issued tokens and MPTs with issuer controls, credentials and permissioned domains.' : 'Ripple program partner: accelerator cohorts, hackathons, continuous work on developer experience.' },
   { id: 'canton', name: 'Canton', logo: networkMarks.Canton, desc: 'Privacy between parties by design.', status: 'Integrations in progress', link: talk },
   { id: 'ethereum', name: 'Ethereum', logo: networkMarks.Ethereum, desc: 'Your protocol or product on EVM, live elsewhere or launching for the first time.', status: 'Native contracts, adapters and SDKs', link: talk },
 ];

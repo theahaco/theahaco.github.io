@@ -1,5 +1,6 @@
 // Content helpers shared by pages and components.
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { isHiddenClient, withoutHiddenClients } from './hidden';
 import { marked } from 'marked';
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -74,7 +75,7 @@ export type Member = CollectionEntry<'team'>;
 const byOrder = (a: { data: { order: number } }, b: { data: { order: number } }) => a.data.order - b.data.order;
 
 export async function caseStudies() {
-  return (await getCollection('caseStudies', (e) => !e.data.draft)).sort(byOrder);
+  return (await getCollection('caseStudies', (e) => !e.data.draft && !isHiddenClient(e.id))).sort(byOrder);
 }
 /**
  * Articles dated in the future are scheduled: the production build
@@ -96,6 +97,7 @@ const byDateDesc = (a: Post, b: Post) => {
 export async function posts() {
   const allAuthors = await authors();
   return (await getCollection('blog', (e) => !e.data.draft && !(PRODUCTION && isScheduled(e.data.date))))
+    .map((p) => ({ ...p, data: withoutHiddenClients(p.data) }))
     .map((p) => {
       const author = allAuthors.find((a) => a.id === p.data.author);
       if (p.data.author && !author) throw new Error(`Blog post "${p.id}" references unknown or draft author "${p.data.author}". Add a published file to src/content/team/ or src/content/authors/.`);
@@ -109,10 +111,10 @@ export function unlinkPosts(html: string, published: Set<string>): string {
   return html.replace(/<a href="\/blog\/([^"\/]+)\/?">(.*?)<\/a>/g, (m, id, text) => (published.has(id) ? m : text));
 }
 export async function networks() {
-  return (await getCollection('networks', (e) => !e.data.draft)).sort(byOrder);
+  return (await getCollection('networks', (e) => !e.data.draft)).map((n) => ({ ...n, data: withoutHiddenClients(n.data) })).sort(byOrder);
 }
 export async function team() {
-  return (await getCollection('team', (e) => !e.data.draft)).sort(byOrder);
+  return (await getCollection('team', (e) => !e.data.draft)).map((m) => ({ ...m, data: withoutHiddenClients(m.data) })).sort(byOrder);
 }
 /** Both collections share one author namespace, including unpublished entries. */
 export async function authors() {
@@ -154,6 +156,7 @@ export function serviceAnchor(eyebrow: string): string {
 }
 
 export { networkMarks, networkIds } from './networkMarks';
+export { isHiddenClient, linksToHiddenClient } from './hidden';
 
 /** Dates are written "September 1, 2026"; lists show "Sep 1, 2026", pages "September 1, 2026". */
 export function formatDate(value: string, style: 'short' | 'long'): string {

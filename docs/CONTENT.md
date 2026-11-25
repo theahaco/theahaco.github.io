@@ -155,6 +155,20 @@ each line exactly as in the template. A case study always waits for Enzo's
 review (NDA). It appears on the Work page; Enzo decides whether it goes on
 the home page.
 
+## Hide a client until it approves
+
+Some clients approve what we say about them before it goes public. To keep one
+off the site for a while, add its case study's file name to `hiddenClients` in
+`src/data/curation.ts` (Ripple is there today). The site then leaves out its
+case study, its logo and quote on the home page, and every line that names it
+as a client or partner. Articles that only report on its products stay. Nothing
+is deleted: remove the name from the list and everything comes back as it was.
+
+In a content file, a list item that belongs to that client is left out on its
+own (through its `client`, `caseStudy` or `href` field). For a line that names
+it, add the wording to use meanwhile under `ifClientHidden`, as in
+`src/content/networks/xrpl.md`.
+
 ## Writing rules
 
 - **Clients under NDA stay anonymous**: no name, logo, city or figure that

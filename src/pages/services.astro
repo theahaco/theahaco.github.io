@@ -15,6 +15,7 @@ import EurcvControls from '../components/services/EurcvControls.astro';
 import IntegrationMap from '../components/services/IntegrationMap.astro';
 import Precedents, { type PrecedentRow } from '../components/services/Precedents.astro';
 import ToolPhones from '../components/services/ToolPhones.astro';
+import { linksToHiddenClient } from '../lib/hidden';
 
 type DoorId = 'institutions' | 'protocols' | 'ecosystems';
 interface Door {
@@ -159,7 +160,7 @@ const doors: Door[] = [
             <p class="v-eyebrow">{d.label}</p>
             <h2 class="sv-h2" id={`${d.id}-title`}>{d.title} <span class="v-soft">{d.soft}</span></h2>
             <p class="sv-lede">{d.lede}</p>
-            <Precedents rows={d.cases} tint={d.tint} />
+            <Precedents rows={d.cases.filter((c) => !linksToHiddenClient(c.href))} tint={d.tint} />
           </div>
           <div class="sv-visual">
             {d.id === 'institutions' && <EurcvControls />}
